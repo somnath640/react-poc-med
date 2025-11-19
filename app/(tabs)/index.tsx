@@ -45,7 +45,7 @@ const HomeScreen = () => {
 							<IconCalendar size={18} color={COLORS.utility.white} />
 						</View>
 						<View style={{ marginLeft: 10 }}>
-							<Text style={styles.bannerSub}>Leave Balance</Text>
+							<Text style={styles.bannerSub}>Leave Balance</Text> 
 							<Text style={styles.bannerHeader}>12 days remaining</Text>
 						</View>
 					</View>
