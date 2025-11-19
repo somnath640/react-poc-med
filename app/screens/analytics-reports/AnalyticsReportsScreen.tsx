@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import COLORS from "../../constants/LupinColors";
+import COLORS from "../../../constants/LupinColors";
 import {
   IconBox,
   IconCalendar,
@@ -19,11 +19,11 @@ import {
   IconRupee,
   IconSparkles,
   IconTinyTrendUp,
-} from "../../constants/LupinIcons";
+} from "../../../constants/LupinIcons";
 
 type TabKey = "leaderboard" | "products" | "territory";
 
-export default function AnalyticsScreen() {
+const AnalyticsReportsScreen: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabKey>("leaderboard");
 
   return (
@@ -174,7 +174,7 @@ export default function AnalyticsScreen() {
   );
 };
 
-
+export default AnalyticsReportsScreen;
 
 /* -------------------------------------------------------------------------- */
 /* SUB COMPONENTS                                                             */

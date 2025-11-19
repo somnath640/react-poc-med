@@ -1,24 +1,28 @@
 import { LinearGradient } from 'expo-linear-gradient'
-import React from 'react'
+import { router, useNavigation } from 'expo-router'
+import React, { useState } from 'react'
 import { Pressable, ScrollView as RNScroll, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import ProgressBar from '../../components/ProgressBar'
 import ScrollCards from '../../components/ScrollCards'
 import COLORS from '../../constants/LupinColors'
 import {
-  IconBox,
-  IconButtonCheck,
-  IconCalendar,
-  IconCheckCircle,
-  IconClipboard,
-  IconMapPin,
-  IconPhoneCall,
-  IconRupee,
-  IconSparkles,
-  IconUserCircle
+	IconBox,
+	IconButtonCheck,
+	IconCalendar,
+	IconCheckCircle,
+	IconClipboard,
+	IconMapPin,
+	IconPhoneCall,
+	IconRupee,
+	IconSparkles,
+	IconUserCircle
 } from '../../constants/LupinIcons'
 
 const HomeScreen = () => {
+	const navigation = useNavigation();
+	const [modalVisible, setModalVisible] = useState(false);
+
 	return (
 		<RNScroll style={styles.screen} contentContainerStyle={styles.container}>
 			{/* Header */}
@@ -45,7 +49,7 @@ const HomeScreen = () => {
 							<Text style={styles.bannerHeader}>12 days remaining</Text>
 						</View>
 					</View>
-					<Text style={styles.bannerAction}>Apply Leave →</Text>
+					<Text style={styles.bannerAction}   onPress={() =>  router.push("/screens/field-activities/leave-attendance")}>Apply Leave →</Text>
 				</LinearGradient>
 
 				<LinearGradient colors={['#7C3AED', '#2563EB']} style={styles.bannerCardPurple}>
@@ -79,7 +83,7 @@ const HomeScreen = () => {
 				<View style={styles.sectionHeader}>
 					<Text style={styles.sectionTitle}>Sales Targets - November</Text>
 					<TouchableOpacity>
-						<Text style={styles.viewDetails}>View Details</Text>
+						<Text style={styles.viewDetails} onPress={() =>  router.push("/analytics")}>View Details</Text>
 					</TouchableOpacity>
 				</View>
 				<View style={styles.targetsList}>
@@ -146,7 +150,7 @@ const HomeScreen = () => {
 						<View style={styles.badgeRed}><Text style={styles.badgeText}>4</Text></View>
 					</View>
 					<TouchableOpacity>
-						<Text style={styles.viewDetails}>View All</Text>
+						<Text style={styles.viewDetails} onPress={() =>  router.push("/hcps")}>View All</Text>
 					</TouchableOpacity>
 				</View>
 
@@ -184,7 +188,7 @@ const HomeScreen = () => {
 						<View style={styles.badgeBlue}><Text style={styles.badgeText}>3</Text></View>
 					</View>
 					<TouchableOpacity>
-						<Text style={styles.viewDetails}>View All</Text>
+						<Text style={styles.viewDetails} onPress={() =>  router.push("/screens/field-activities/sample-tracking")}>View All</Text>
 					</TouchableOpacity>
 				</View>
 

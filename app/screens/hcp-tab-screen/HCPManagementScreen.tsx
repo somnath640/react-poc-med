@@ -1,3 +1,6 @@
+import ModalHcpProfile from "@/components/ModalHcpProfile";
+import COLORS from "@/constants/LupinColors";
+import { IconPlan, IconSparkles } from "@/constants/LupinIcons";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import {
@@ -12,13 +15,7 @@ import {
   View,
 } from "react-native";
 
-import ModalHcpProfile from "@/components/ModalHcpProfile";
-import COLORS from "../../constants/LupinColors";
-import {
-  IconPlan,
-  IconSparkles
-} from "../../constants/LupinIcons";
-import AddHCPModal from "../screens/hcp-tab-screen/AddHCPModal";
+
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
@@ -37,16 +34,18 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title, onBack, onAdd }) => {
     <View style={[styles.header, { backgroundColor: 'transparent' }]}>
   <View style={styles.headerLeft}>
     <TouchableOpacity onPress={onBack} style={styles.backBtn}>
-      <Text style={styles.backIcon}>‹</Text>
+      <Text style={[styles.backIcon, { color: '#000' }]}>‹</Text>
     </TouchableOpacity>
-    <Text style={styles.headerTitle}>{title}</Text>
+
+    <Text style={[styles.headerTitle, { color: '#000' }]}>{title}</Text>
   </View>
 
   <TouchableOpacity style={styles.addBtn} onPress={onAdd}>
-    <Text style={styles.addPlus}>+</Text>
-    <Text style={styles.addText}>Add HCP</Text>
+    <Text style={{ color: '#ffffff', fontSize: 20 }}>+</Text>
+    <Text style={{ color: '#ffffff' }}>Add HCP</Text>
   </TouchableOpacity>
 </View>
+
 
   );
 };
@@ -123,7 +122,7 @@ type Doctor = {
 
 const DoctorCard: React.FC<{ doctor: Doctor }> = ({ doctor }) => {
   const [modalVisible, setModalVisible] = useState(false);
-    const closeModal = () => setModalVisible(false);
+  const closeModal = () => setModalVisible(false);
   const tierBg =
     doctor.tier === "Gold"
       ? "#FBBF24"
@@ -157,10 +156,7 @@ const DoctorCard: React.FC<{ doctor: Doctor }> = ({ doctor }) => {
           </View>
         </View>
       </View>
-<ModalHcpProfile 
-                    visible={modalVisible} 
-                    onClose={closeModal} 
-                  />
+
       <View style={styles.docStatsRow}>
         <Text style={styles.docStatText}>
           Last Visit: <Text style={styles.docStatStrong}>{doctor.lastVisit}</Text>
@@ -175,6 +171,10 @@ const DoctorCard: React.FC<{ doctor: Doctor }> = ({ doctor }) => {
         <IconPlan size={16} color={COLORS.gray[700]} />
         <Text style={styles.docProfileText}>View 360° Profile</Text>
       </TouchableOpacity>
+      <ModalHcpProfile 
+              visible={modalVisible} 
+              onClose={closeModal} 
+            />
     </View>
   );
 };
@@ -234,9 +234,8 @@ const mockDoctors: Doctor[] = [
   },
 ];
 
-const HcpsScreen: React.FC = () => {
+const HCPManagementScreen: React.FC = () => {
   const [filterVisible, setFilterVisible] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <SafeAreaView style={styles.screen}>
@@ -244,9 +243,8 @@ const HcpsScreen: React.FC = () => {
       <PageHeader
         title="HCP Management"
         onBack={() => console.log("Back pressed")}
-        onAdd={() => setModalVisible(true)}
+        onAdd={() => console.log("Add HCP")}
       />
-      <AddHCPModal visible={modalVisible} onClose={()=>setModalVisible(false)} onSubmit={()=>setModalVisible(false)} />
 
       {/* Content */}
       <View style={styles.body}>
@@ -344,7 +342,7 @@ const HcpsScreen: React.FC = () => {
   );
 };
 
-export default HcpsScreen;
+export default HCPManagementScreen;
 
 /* -------------------------------------------------------------------------- */
 /*  STYLES                                                                    */
@@ -381,7 +379,7 @@ const styles = StyleSheet.create({
     fontWeight: "300",
   },
   headerTitle: {
-    color: COLORS.utility.black,
+    color: COLORS.utility.white,
     fontSize: 20,
     fontWeight: "600",
   },
@@ -583,22 +581,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 4,
   },
-   modalOverlay: {
-    flex: 1,
-    backgroundColor: "rgba(0,0,0,0.5)",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  modalContent: {
-    width: 300,
-    padding: 20,
-    backgroundColor: "white",
-    borderRadius: 8,
-    alignItems: "center",
-  },
-  modalTitle: { fontSize: 18, fontWeight: "bold", marginBottom: 10 },
-  closeBtn: { marginTop: 20, padding: 10, backgroundColor: "#ddd", borderRadius: 5 },
-  closeText: { fontSize: 16 },
   docLocationBullet: {
     fontSize: 12,
     marginRight: 4,

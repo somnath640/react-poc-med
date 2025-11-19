@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import ModalHcpProfile from './ModalHcpProfile';
 
 type ScrollCardProps = {
   name: string;
@@ -27,6 +28,9 @@ const ScrollCards: React.FC<ScrollCardProps> = (props: ScrollCardProps) => {
     rx,
     borderColor,
   } = props;
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const closeModal = () => setModalVisible(false);
   return (
     <View style={[styles.card, { borderLeftColor: borderColor }]}>
       
@@ -61,10 +65,13 @@ const ScrollCards: React.FC<ScrollCardProps> = (props: ScrollCardProps) => {
       </View>
 
       {/* View Details Button */}
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={() => setModalVisible(true)}>
         <Text style={styles.buttonText}>View Details</Text>
       </TouchableOpacity>
-
+    <ModalHcpProfile 
+        visible={modalVisible} 
+        onClose={closeModal} 
+      />
     </View>
   );
 };

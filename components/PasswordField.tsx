@@ -1,6 +1,7 @@
+import styles from '@/app/styles';
 import React, { useState } from 'react';
 import { Text, TextInput, TouchableOpacity, View } from 'react-native';
-import styles from '../styles';
+
 
 type Props = {
     label: string;

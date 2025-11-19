@@ -1,3 +1,4 @@
+// RouteDashboardScreen.tsx
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import React from "react";
 import {
@@ -27,8 +28,8 @@ const COLORS = {
   alert: "#FFF4F2",
 };
 
-export default function RouteScreen() {
- return (
+const RouteDashboardScreen = () => {
+  return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         {/* HEADER */}
@@ -351,7 +352,7 @@ export default function RouteScreen() {
       </View>
     </SafeAreaView>
   );
-}
+};
 
 /* ---------- SMALL COMPONENTS ---------- */
 
@@ -1136,3 +1137,5 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 });
+
+export default RouteDashboardScreen;
