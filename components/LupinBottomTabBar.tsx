@@ -2,11 +2,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import {
-    SafeAreaView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Platform,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 
 const BLUE = '#2563eb';
@@ -20,9 +21,8 @@ const LupinBottomTabBar: React.FC<BottomTabBarProps> = ({
   navigation,
 }) => {
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.outer}>
-        <View style={styles.pill}>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.pill}>
           {state.routes.map((route, index) => {
             const { options } = descriptors[route.key];
 
@@ -77,7 +77,6 @@ const LupinBottomTabBar: React.FC<BottomTabBarProps> = ({
               </TouchableOpacity>
             );
           })}
-        </View>
       </View>
     </SafeAreaView>
   );
@@ -101,14 +100,15 @@ function getIconName(routeName: string, focused: boolean): any {
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    backgroundColor: 'transparent',
-  },
-  outer: {
+  container: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    // paddingBottom: 8,
-    // paddingTop: 4,
+    backgroundColor: 'transparent',
+    paddingBottom: Platform.OS === 'android' ? 8 : 0,
   },
   pill: {
     flexDirection: 'row',

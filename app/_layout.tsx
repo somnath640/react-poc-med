@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { LinearGradient } from 'expo-linear-gradient';
-import { router } from 'expo-router';
+import { router, Slot } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
 import React from 'react';
 import {
@@ -215,6 +215,10 @@ function CustomDrawerContent(props: any) {
   );
 }
 
+// Define missing color constants
+const LUPIN_GREEN_LEFT = '#01963f';
+const LUPIN_GREEN_RIGHT = '#008a37';
+
 export default function RootLayout() {
   return (
     <Drawer
@@ -223,9 +227,10 @@ export default function RootLayout() {
       
       screenOptions={({ navigation }) => ({
         drawerPosition: 'right',
+        headerTitleAlign: 'left',
         // Left logo
         headerLeft: () => (
-          <View style={{ marginLeft: 12 }}>
+          <View style={{ marginLeft: 12, marginRight: 8}}>
             <View style={styles.logoWrap}>
               <Image source={require('../assets/images/logo-lu.png')} style={styles.logoImage} resizeMode="contain" />
             </View>
@@ -247,6 +252,7 @@ export default function RootLayout() {
             <Text style={styles.headerSubtitle}>Field Force Management</Text>
           </View>
         ),
+        
         // Header background (gradient)
         headerStyle: {
           backgroundColor: 'transparent',
@@ -258,14 +264,15 @@ export default function RootLayout() {
         },
         headerBackground: () => (
           <LinearGradient
-            colors={COLORS.gradients.lupinGreen as [string, string]}
+            colors={[LUPIN_GREEN_LEFT, LUPIN_GREEN_RIGHT]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
-            style={{ flex: 1 }}
+            style={styles.container}
           />
         ),
       })}
     >
+      <Slot />
     </Drawer>
   );
 }
@@ -286,9 +293,9 @@ const styles = StyleSheet.create({
   drawerHeader: {
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: 'green',
+    backgroundColor: 'transparent',
   },
-  container: { flex: 1, backgroundColor: '#fff' },
+  container: { flex: 1, backgroundColor: '#fff',},
   userDetailsContainer: {
     marginBottom: 20,
     backgroundColor: '#0A4DFF',
@@ -394,10 +401,10 @@ const styles = StyleSheet.create({
   logoWrap: {
     width: 40,
     height: 40,
-    borderRadius: 20,
-    backgroundColor: 'rgba(255,255,255,0.12)',
+    borderRadius: 8,
+    backgroundColor: '#ffffff',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  logoImage: { width: 28, height: 28, borderRadius: 14 },
+  logoImage: { width: 28, height: 28 },
 });

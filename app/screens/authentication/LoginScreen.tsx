@@ -2,7 +2,7 @@ import styles from '@/app/styles';
 import InputField from '@/components/InputField';
 import PasswordField from '@/components/PasswordField';
 import { PrimaryButton } from '@/constants/LupinColors';
-import { router, useNavigation } from 'expo-router';
+import { useNavigation } from 'expo-router';
 import React, { useState } from 'react';
 import { SafeAreaView, ScrollView, View } from 'react-native';
 import AppTitle from '../pagecomponents/AppTitle';
@@ -21,7 +21,7 @@ const LoginScreen: React.FC = () => {
             alert('Please enter username and password.');
             return;
         }
-        router.replace('/bottom-nav');
+        // router.replace('/bottom-nav');
     };
 
     const fillDemo = () => {
@@ -50,7 +50,6 @@ const LoginScreen: React.FC = () => {
 
                     
                 </View>
-                
             </ScrollView>
             <Footer />
         </SafeAreaView>

@@ -3,20 +3,21 @@ import { router, useNavigation } from 'expo-router'
 import React, { useState } from 'react'
 import { Pressable, ScrollView as RNScroll, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
+import AttendanceModal from '../../app/modals/AttendanceModal'
 import ProgressBar from '../../components/ProgressBar'
 import ScrollCards from '../../components/ScrollCards'
 import COLORS from '../../constants/LupinColors'
 import {
-	IconBox,
-	IconButtonCheck,
-	IconCalendar,
-	IconCheckCircle,
-	IconClipboard,
-	IconMapPin,
-	IconPhoneCall,
-	IconRupee,
-	IconSparkles,
-	IconUserCircle
+  IconBox,
+  IconButtonCheck,
+  IconCalendar,
+  IconCheckCircle,
+  IconClipboard,
+  IconMapPin,
+  IconPhoneCall,
+  IconRupee,
+  IconSparkles,
+  IconUserCircle
 } from '../../constants/LupinIcons'
 
 const HomeScreen = () => {
@@ -32,11 +33,11 @@ const HomeScreen = () => {
 					<Text style={styles.subtitle}>Welcome back, demo</Text>
 					<Text style={styles.date}>Thursday, November 6, 2025</Text>
 				</View>
-				<Pressable style={styles.attendanceBtn} onPress={() => console.log('Mark Attendance')}>
+				<Pressable style={styles.attendanceBtn} onPress={() => setModalVisible(true)}>
 					<Text style={styles.attendanceText}>Mark Attendance</Text>
 				</Pressable>
 	</View>
-
+  <AttendanceModal visible={modalVisible} onClose={() => setModalVisible(false)} onConfirm={()=>setModalVisible(false)}/>
 	{/* Banners */}
 			<View style={styles.banners}>
 				<LinearGradient colors={[COLORS.emerald[500], COLORS.emerald[600]]} style={styles.bannerCard}>
