@@ -1,24 +1,30 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
-
-import { useColorScheme } from '@/hooks/use-color-scheme';
-
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
+// app/_layout.tsx
+import { Drawer } from 'expo-router/drawer';
+import React from 'react';
+import LupinHeader from '../components/LupinHeader';
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <Drawer
+      screenOptions={{
+        drawerPosition: 'right',
+        header: (props) => <LupinHeader {...props} />,
+      }}
+    >
+      {/* Main dashboard with tabs */}
+      <Drawer.Screen
+        name="(tabs)"
+        options={{
+          title: 'Dashboard',
+        }}
+      />
+      {/* Example extra screen in drawer */}
+      <Drawer.Screen
+        name="settings"
+        options={{
+          title: 'Settings',
+        }}
+      />
+    </Drawer>
   );
 }

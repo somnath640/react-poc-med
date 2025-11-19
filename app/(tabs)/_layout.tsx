@@ -1,34 +1,36 @@
-import { Tabs } from 'expo-router';
+// app/(tabs)/_layout.tsx
+import { Tabs } from 'expo-router/tabs';
 import React from 'react';
+import LupinBottomTabBar from '../../components/LupinBottomTabBar';
 
-import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
-
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
+export default function TabsLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-      }}>
+        headerShown: false,    // header is handled by the drawer (LupinHeader)
+        tabBarStyle: { display: 'none' }, // we use our custom bar
+      }}
+      tabBar={(props) => <LupinBottomTabBar {...props} />}
+    >
       <Tabs.Screen
         name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-        }}
+        options={{ title: 'Home' }}
       />
       <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-        }}
+        name="route"
+        options={{ title: 'Route' }}
+      />
+      <Tabs.Screen
+        name="hcps"
+        options={{ title: 'HCPs' }}
+      />
+      <Tabs.Screen
+        name="calls"
+        options={{ title: 'Calls' }}
+      />
+      <Tabs.Screen
+        name="analytics"
+        options={{ title: 'Analytics' }}
       />
     </Tabs>
   );
