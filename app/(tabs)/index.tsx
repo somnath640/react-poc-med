@@ -200,7 +200,7 @@ const HomeScreen = () => {
 						<View style={styles.badgeBlue}><Text style={styles.badgeText}>3</Text></View>
 					</View>
 					<TouchableOpacity>
-						<Text style={styles.viewDetails} onPress={() =>  router.push("/screens/field-activities/sample-tracking")}>View All</Text>
+						<Text style={styles.viewDetails} onPress={() =>  router.push("/(tabs)")}>View All</Text>
 					</TouchableOpacity>
 				</View>
 

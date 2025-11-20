@@ -35,7 +35,8 @@ function CustomDrawerContent(props: any) {
     <DrawerContentScrollView
       {...props}
       contentContainerStyle={styles.drawerScrollContent}
-      style={{ padding: 0, margin: 0 }}
+      pagingEnabled={false}
+      style={{}}
     >
       {/* Brand header (green) */}
       <View style={styles.brandHeader}>
@@ -454,8 +455,6 @@ export default function RootLayout() {
       drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={({ navigation }) => ({
         drawerPosition: 'right',
-        // hide the default header provided by the Drawer; we'll render
-        // the header inside the Tabs layout so only tab pages show it
         headerShown: false,
       })}
     >
@@ -468,8 +467,11 @@ export default function RootLayout() {
 
 const styles = StyleSheet.create({
   drawerScrollContent: {
-    paddingBottom: 0,
     backgroundColor: "transparent",
+    paddingTop: 0,
+    paddingBottom: 0,
+    margin: 0,
+    padding: 0,
   },
 
   /* header bar of app */
