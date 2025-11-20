@@ -1,28 +1,30 @@
 import { LinearGradient } from 'expo-linear-gradient'
 import { router, useNavigation } from 'expo-router'
 import React, { useState } from 'react'
-import { Pressable, ScrollView as RNScroll, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Modal, Pressable, ScrollView as RNScroll, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import AttendanceModal from '../../app/modals/AttendanceModal'
 import ProgressBar from '../../components/ProgressBar'
 import ScrollCards from '../../components/ScrollCards'
 import COLORS from '../../constants/LupinColors'
 import {
-  IconBox,
-  IconButtonCheck,
-  IconCalendar,
-  IconCheckCircle,
-  IconClipboard,
-  IconMapPin,
-  IconPhoneCall,
-  IconRupee,
-  IconSparkles,
-  IconUserCircle
+	IconBox,
+	IconButtonCheck,
+	IconCalendar,
+	IconCheckCircle,
+	IconClipboard,
+	IconMapPin,
+	IconPhoneCall,
+	IconRupee,
+	IconSparkles,
+	IconUserCircle
 } from '../../constants/LupinIcons'
+import DailyPlanningScreen from '../screens/modals/DailyPlanningScreen'
 
 const HomeScreen = () => {
 	const navigation = useNavigation();
 	const [modalVisible, setModalVisible] = useState(false);
+	const [welcomeModal, setWelcomeModal] = useState(true)
 
 	return (
 		<RNScroll style={styles.screen} contentContainerStyle={styles.container}>
@@ -37,6 +39,14 @@ const HomeScreen = () => {
 					<Text style={styles.attendanceText}>Mark Attendance</Text>
 				</Pressable>
 	</View>
+	<Modal
+		  visible={welcomeModal}
+		  animationType="fade"
+		  transparent
+		  onRequestClose={()=>setWelcomeModal(false)}
+		>
+        <DailyPlanningScreen setWelcomeModal={setWelcomeModal} />
+      </Modal>
   <AttendanceModal visible={modalVisible} onClose={() => setModalVisible(false)} onConfirm={()=>setModalVisible(false)}/>
 	{/* Banners */}
 			<View style={styles.banners}>

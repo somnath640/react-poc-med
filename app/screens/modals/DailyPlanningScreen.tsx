@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 
+import { router } from 'expo-router';
 import COLORS from '../../../constants/LupinColors';
 import {
   IconAlertCircle,
@@ -29,7 +30,7 @@ import {
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const CARD_MAX_WIDTH = 420;
 
-const DailyPlanningScreen: React.FC = () => {
+const DailyPlanningScreen: React.FC<any> = ({setWelcomeModal}) => {
   const cardWidth = Math.min(SCREEN_WIDTH - 24, CARD_MAX_WIDTH);
 
   return (
@@ -208,7 +209,7 @@ const DailyPlanningScreen: React.FC = () => {
                 style={styles.primaryFooterGradient}
               >
                 <IconButtonCheck size={20} color={COLORS.utility.white} />
-                <Text style={styles.primaryFooterText}>Start My Day</Text>
+                <Text style={styles.primaryFooterText} onPress={() =>  {router.push("/screens/ai-assistant");setWelcomeModal(false)}}>Start My Day</Text>
               </LinearGradient>
             </TouchableOpacity>
 

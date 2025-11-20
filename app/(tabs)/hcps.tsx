@@ -12,6 +12,7 @@ import {
   View,
 } from "react-native";
 
+import FilterRoutesDrawer from "@/components/FilterRoutesDrawer";
 import ModalHcpProfile from "@/components/ModalHcpProfile";
 import COLORS from "../../constants/LupinColors";
 import {
@@ -335,10 +336,16 @@ const HcpsScreen: React.FC = () => {
       </View>
 
       {/* Filter modal */}
-      <FilterModal
+      {/* <FilterModal
         visible={filterVisible}
         onClose={() => setFilterVisible(false)}
         totalCount={mockDoctors.length}
+      /> */}
+      {/* Sidebar drawer */}
+      <FilterRoutesDrawer
+        visible={filterVisible}
+        onClose={() => setFilterVisible(false)}
+        title="Filter HCPs"
       />
     </SafeAreaView>
   );

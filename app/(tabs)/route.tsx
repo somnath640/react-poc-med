@@ -1,5 +1,6 @@
+import FilterRoutesDrawer from "@/components/FilterRoutesDrawer";
 import { Ionicons } from "@expo/vector-icons";
-import React from "react";
+import React, { useState } from "react";
 import {
     SafeAreaView,
     ScrollView,
@@ -28,6 +29,7 @@ const COLORS = {
 };
 
 export default function RouteScreen() {
+   const [showFilter, setShowFilter] = useState(false);
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
@@ -37,8 +39,12 @@ export default function RouteScreen() {
 
           <TouchableOpacity style={styles.topBarFilterBtn}>
             <Ionicons name="funnel-outline" size={16} color={COLORS.textDark} />
-            <Text style={styles.topBarFilterText}>Filters</Text>
+            <Text style={styles.topBarFilterText}  onPress={() => setShowFilter(true)}>Filters</Text>
           </TouchableOpacity>
+          <FilterRoutesDrawer
+        visible={showFilter}
+        onClose={() => setShowFilter(false)}
+      />
         </View>
 
         <ScrollView
