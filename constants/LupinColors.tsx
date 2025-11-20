@@ -4,13 +4,13 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import {
-    StyleProp,
-    StyleSheet,
-    Text,
-    TextStyle,
-    TouchableOpacity,
-    View,
-    ViewStyle,
+  StyleProp,
+  StyleSheet,
+  Text,
+  TextStyle,
+  TouchableOpacity,
+  View,
+  ViewStyle,
 } from 'react-native';
 
 // ────────────────────────────────
@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
   primaryButton: {
     paddingVertical: 12,
     paddingHorizontal: 16,
-    borderRadius: 999,
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },

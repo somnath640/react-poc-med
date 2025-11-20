@@ -37,7 +37,7 @@ const LoginScreen: React.FC = () => {
     return (
         <SafeAreaView style={styles.safe}>
             <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
-                <View style={{ alignItems: 'center', marginTop: 8 }}>
+                <View style={{ alignItems: 'center', marginTop: "10%" }}>
                     <Image source={require('../../../assets/images/logo-lu.png')} style={styles.logoLarge} resizeMode="contain" />
                     <AppTitle title={"LUPIN CRM"} subtitle={"Field Force Management System"} />
                 </View>
@@ -46,7 +46,7 @@ const LoginScreen: React.FC = () => {
                     <InputField label="Username" placeholder="Enter your username" value={username} onChangeText={setUsername} />
 
                     <PasswordField label="Password" placeholder="Enter your password" value={password} onChangeText={setPassword} />
-
+                    <View style={{height: 10}} />
                     <PrimaryButton title="Login" onPress={handleLogin} />
 
                     <DemoBox />

@@ -12,7 +12,7 @@ export default StyleSheet.create({
     eyeButton: { padding: 6 },
     primaryButton: { marginTop: 18, backgroundColor: '#15803D', paddingVertical: 14, borderRadius: 10, alignItems: 'center' },
     primaryButtonText: { color: '#fff', fontSize: 16, fontWeight: '600', letterSpacing: 0.1},
-    demoBox: { marginTop: 20, borderWidth: 1, borderColor: '#BFDBFE', backgroundColor: '#EFF6FF', padding: 12, borderRadius: 8 },
+    demoBox: { marginTop: 20, marginBottom: 20, borderWidth: 1, borderColor: '#BFDBFE', backgroundColor: '#EFF6FF', padding: 12, borderRadius: 8 },
     demoTitle: { fontWeight: '700', marginBottom: 8, color: '#1E3A8A' },
     demoLine: { marginTop: 5, color: '#111827' },
     demoLabel: { fontWeight: '600', },
