@@ -1,27 +1,26 @@
-import { Ionicons } from '@expo/vector-icons';
-import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
-import { LinearGradient } from 'expo-linear-gradient';
-import { router, Slot } from 'expo-router';
-import { Drawer } from 'expo-router/drawer';
-import React from 'react';
+import { Ionicons } from "@expo/vector-icons";
+import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
+import { LinearGradient } from "expo-linear-gradient";
+import { router, Slot } from "expo-router";
+import { Drawer } from "expo-router/drawer";
+import React from "react";
 import {
   Image,
   Pressable,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
-} from 'react-native';
-import COLORS from '../constants/LupinColors';
+  View,
+} from "react-native";
+import COLORS from "../constants/LupinColors";
 
 // Helper: right arrow icon
 function RightArrow() {
-  return <Ionicons name="chevron-forward" size={20} color="#999" />;
+  return <Ionicons name="chevron-forward" size={18} color="#c4c4c4" />;
 }
 
 // Wrapper that keeps left content and places an arrow on the right
-function LabelWrapper({ children }: { children: any }) {
+function LabelWrapper({ children }: { children: React.ReactNode }) {
   return (
     <View style={styles.labelContainer}>
       <View style={styles.labelLeft}>{children}</View>
@@ -30,222 +29,451 @@ function LabelWrapper({ children }: { children: any }) {
   );
 }
 
-// Custom drawer content: keeps default screens and adds manual items
+/* ---------------------- CUSTOM DRAWER CONTENT ---------------------- */
+
 function CustomDrawerContent(props: any) {
+  const { navigation } = props;
+
   return (
     <DrawerContentScrollView
       {...props}
-      screenoptions={{
-        drawerType: 'front',
-        overlayColor: 'rgba(0,0,0,0.35)',
-        swipeEnabled: true,
-        swipeEdgeWidth: 80,
-        drawerStyle: {
-          width: '75%',
-        },
-      }}
-      contentContainerStyle={{ padding: 0, borderRadius: 10 }}
+      contentContainerStyle={styles.drawerScrollContent}
+      style={{ padding: 0, margin: 0 }}
     >
-      <View style={styles.drawerHeader}>
-        <Text style={styles.headerTitleText}>CRM</Text>
-        <Text style={styles.headerSubtitle}>Field Force Management</Text>
-      </View>
-
-      <ScrollView style={styles.container}>
-        <View style={styles.userDetailsContainer}>
-          <View style={styles.header}>
+      {/* Brand header (green) */}
+      <View style={styles.brandHeader}>
+        <View style={styles.brandLeft}>
+          <View style={styles.brandLogoWrap}>
             <Image
-              source={{ uri: 'https://i.pravatar.cc/150?img=12' }}
-              style={styles.avatar}
+              source={require("../assets/images/logo-lu.png")}
+              style={styles.brandLogoImage}
+              resizeMode="contain"
             />
-            <View>
-              <Text style={styles.name}>Rahul Sharma</Text>
-              <Text style={styles.role}>Medical Representative</Text>
-              <Text style={styles.id}>ID: EMP2024789</Text>
-            </View>
           </View>
-
-          {/* Division */}
-          <View style={styles.infoBox}>
-            <View style={styles.detailscontainer}>
-              <Text style={styles.infoLabel}>Division</Text>
-              <Text style={styles.infoValue}>Cardiology</Text>
-            </View>
-
-            <View style={styles.detailscontainer}>
-              <Text style={styles.infoLabel}>Zone</Text>
-              <Text style={styles.infoValue}>Mumbai</Text>
-            </View>
+          <View>
+            <Text style={styles.brandTitle}>LUPIN</Text>
+            <Text style={styles.brandSubtitle}>Pharmaceuticals Ltd.</Text>
           </View>
         </View>
 
-        {/* Section Title */}
-        <Text style={styles.sectionTitle}>AI FIELD ASSISTANT</Text>
-
-        {/* AI Assistant Option */}
-        <DrawerItem
-          style={{ margin: 0, padding: 0 }}
-          icon={({ color, size }) => (
-            <Ionicons name="calendar" size={18} color="black" />
-          )}
-          label={() => (
-            <LabelWrapper>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={styles.itemText} onPress={() => router.push("/screens/ai-assistant")}>Lupin AI Assistant</Text>
-                <Text style={styles.tag}>NEW</Text>
-              </View>
-            </LabelWrapper>
-          )}
-          onPress={() => { }}
-        />
-
-        {/* Field Activities */}
-        <Text style={styles.sectionTitle}>FIELD ACTIVITIES</Text>
-
-        <DrawerItem
-          icon={({ color, size }) => (
-            <Ionicons name="calendar" size={18} color="black" />
-          )}
-          label={() => (
-            <LabelWrapper>
-              <View style={styles.itemLeft}>
-                <Text style={styles.itemText}>Expense Management</Text>
-                <View style={styles.badge}>
-                  <Text style={styles.badgeText}>2</Text>
-                </View>
-              </View>
-            </LabelWrapper>
-          )}
-          onPress={() => { }}
-        />
-        <DrawerItem
-          icon={({ color, size }) => (
-            <Ionicons name="calendar" size={18} color="black" />
-          )}
-          label={() => (
-            <LabelWrapper>
-              <Text style={styles.itemText}>Leave & Attendance</Text>
-            </LabelWrapper>
-          )}
-          onPress={() => { }}
-        />
-        <DrawerItem
-          icon={({ color, size }) => (
-            <Ionicons name="calendar" size={18} color="black" />
-          )}
-          label={() => (
-            <LabelWrapper>
-              <View style={styles.itemLeft}>
-                <Text style={styles.itemText}>Sample Tracking</Text>
-                <View style={styles.badge}>
-                  <Text style={styles.badgeText}>3</Text>
-                </View>
-              </View>
-            </LabelWrapper>
-          )}
-          onPress={() => { }}
-        />
-        <DrawerItem
-          icon={({ color, size }) => (
-            <Ionicons name="calendar" size={18} color="black" />
-          )}
-          label={() => (
-            <LabelWrapper>
-              <Text style={styles.itemText}>Chemist Visit</Text>
-            </LabelWrapper>
-          )}
-          onPress={() => { }}
-        />
-        <DrawerItem
-          icon={({ color, size }) => (
-            <Ionicons name="calendar" size={18} color="black" />
-          )}
-          label={() => (
-            <LabelWrapper>
-              <View style={styles.itemLeft}>
-                <Text style={styles.itemText}>Stockist Visit</Text>
-                <View style={styles.badge}>
-                  <Text style={styles.badgeText}>2</Text>
-                </View>
-              </View>
-            </LabelWrapper>
-          )}
-          onPress={() => { }}
-        />
-
-        {/* Engagement */}
-        <Text style={styles.sectionTitle}>ENGAGEMENT & MARKETING</Text>
-
-        <DrawerItem
-          icon={({ color, size }) => (
-            <Ionicons name="calendar" size={18} color="black" />
-          )}
-          label={() => (
-            <LabelWrapper>
-              <View style={styles.itemLeft}>
-                <Text style={styles.itemText}>Campaigns</Text>
-                <View style={styles.badge}>
-                  <Text style={styles.badgeText}>5</Text>
-                </View>
-              </View>
-            </LabelWrapper>
-          )}
-          onPress={() => { }}
-        />
-        <DrawerItem
-          icon={({ color, size }) => (
-            <Ionicons name="calendar" size={18} color="black" />
-          )}
-          label={() => (
-            <LabelWrapper>
-              <Text style={styles.itemText}>E-Detailing</Text>
-            </LabelWrapper>
-          )}
-          onPress={() => { }}
-        />
-        <DrawerItem
-          icon={({ color, size }) => (
-            <Ionicons name="calendar" size={18} color="black" />
-          )}
-          label={() => (
-            <LabelWrapper>
-              <Text style={styles.itemText}>KOL Management</Text>
-            </LabelWrapper>
-          )}
-          onPress={() => { }}
-        />
-
-        {/* Logout */}
-        <TouchableOpacity style={styles.logoutBtn} onPress={() => { }}>
-          <Text style={styles.logoutText}>Logout</Text>
+        <TouchableOpacity
+          onPress={() => navigation.closeDrawer()}
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        >
+          <Ionicons name="close" size={20} color="#ffffff" />
         </TouchableOpacity>
-      </ScrollView>
+      </View>
+
+      {/* User card (blue block) */}
+      <View style={styles.userCard}>
+        <View style={styles.userRow}>
+          <View style={styles.avatar}>
+            <Text style={styles.avatarInitial}>R</Text>
+          </View>
+          <View>
+            <Text style={styles.name}>Rahul Sharma</Text>
+            <Text style={styles.role}>Medical Representative</Text>
+            <Text style={styles.id}>ID: EMP2024789</Text>
+          </View>
+        </View>
+
+        <View style={styles.userPillsRow}>
+          <View style={styles.userPill}>
+            <Text style={styles.pillLabel}>Division</Text>
+            <Text style={styles.pillValue}>Cardiology</Text>
+          </View>
+          <View style={styles.userPill}>
+            <Text style={styles.pillLabel}>Zone</Text>
+            <Text style={styles.pillValue}>Mumbai</Text>
+          </View>
+        </View>
+      </View>
+
+      {/* AI Field Assistant */}
+      <Text style={styles.sectionTitle}>AI FIELD ASSISTANT</Text>
+
+      <DrawerItem
+        style={styles.drawerItem}
+        icon={() => (
+          <View style={styles.itemIconCircle}>
+            <Ionicons name="sparkles-outline" size={16} color="#9333ea" />
+          </View>
+        )}
+        label={() => (
+          <LabelWrapper>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Text
+                style={styles.itemText}
+                onPress={() => router.push("/screens/ai-assistant")}
+              >
+                Lupin AI Assistant
+              </Text>
+              <View style={styles.newTag}>
+                <Text style={styles.newTagText}>NEW</Text>
+              </View>
+            </View>
+          </LabelWrapper>
+        )}
+        onPress={() => router.push("/screens/ai-assistant")}
+      />
+
+      {/* FIELD ACTIVITIES */}
+      <Text style={styles.sectionTitle}>FIELD ACTIVITIES</Text>
+
+      <DrawerItem
+        style={styles.drawerItem}
+        icon={() => (
+          <View style={styles.itemIconCircle}>
+            <Ionicons name="card-outline" size={16} color="#4b5563" />
+          </View>
+        )}
+        label={() => (
+          <LabelWrapper>
+            <View style={styles.itemLeft}>
+              <Text style={styles.itemText}>Expense Management</Text>
+              <View style={styles.badge}>
+                <Text style={styles.badgeText}>2</Text>
+              </View>
+            </View>
+          </LabelWrapper>
+        )}
+        onPress={() => {}}
+      />
+
+      <DrawerItem
+        style={styles.drawerItem}
+        icon={() => (
+          <View style={styles.itemIconCircle}>
+            <Ionicons name="time-outline" size={16} color="#4b5563" />
+          </View>
+        )}
+        label={() => (
+          <LabelWrapper>
+            <Text style={styles.itemText}>Leave & Attendance</Text>
+          </LabelWrapper>
+        )}
+        onPress={() => {}}
+      />
+
+      <DrawerItem
+        style={styles.drawerItem}
+        icon={() => (
+          <View style={styles.itemIconCircle}>
+            <Ionicons name="cube-outline" size={16} color="#4b5563" />
+          </View>
+        )}
+        label={() => (
+          <LabelWrapper>
+            <View style={styles.itemLeft}>
+              <Text style={styles.itemText}>Sample Tracking</Text>
+              <View style={styles.badge}>
+                <Text style={styles.badgeText}>3</Text>
+              </View>
+            </View>
+          </LabelWrapper>
+        )}
+        onPress={() => {}}
+      />
+
+      <DrawerItem
+        style={styles.drawerItem}
+        icon={() => (
+          <View style={styles.itemIconCircle}>
+            <Ionicons name="medkit-outline" size={16} color="#4b5563" />
+          </View>
+        )}
+        label={() => (
+          <LabelWrapper>
+            <Text style={styles.itemText}>Chemist Visit</Text>
+          </LabelWrapper>
+        )}
+        onPress={() => {}}
+      />
+
+      <DrawerItem
+        style={styles.drawerItem}
+        icon={() => (
+          <View style={styles.itemIconCircle}>
+            <Ionicons name="briefcase-outline" size={16} color="#4b5563" />
+          </View>
+        )}
+        label={() => (
+          <LabelWrapper>
+            <View style={styles.itemLeft}>
+              <Text style={styles.itemText}>Stockist Visit</Text>
+              <View style={styles.badge}>
+                <Text style={styles.badgeText}>2</Text>
+              </View>
+            </View>
+          </LabelWrapper>
+        )}
+        onPress={() => {}}
+      />
+
+      {/* ENGAGEMENT & MARKETING */}
+      <Text style={styles.sectionTitle}>ENGAGEMENT & MARKETING</Text>
+
+      <DrawerItem
+        style={styles.drawerItem}
+        icon={() => (
+          <View style={styles.itemIconCircle}>
+            <Ionicons name="megaphone-outline" size={16} color="#4b5563" />
+          </View>
+        )}
+        label={() => (
+          <LabelWrapper>
+            <View style={styles.itemLeft}>
+              <Text style={styles.itemText}>Campaigns</Text>
+              <View style={styles.badge}>
+                <Text style={styles.badgeText}>5</Text>
+              </View>
+            </View>
+          </LabelWrapper>
+        )}
+        onPress={() => {}}
+      />
+
+      <DrawerItem
+        style={styles.drawerItem}
+        icon={() => (
+          <View style={styles.itemIconCircle}>
+            <Ionicons name="tablet-portrait-outline" size={16} color="#4b5563" />
+          </View>
+        )}
+        label={() => (
+          <LabelWrapper>
+            <Text style={styles.itemText}>E-Detailing</Text>
+          </LabelWrapper>
+        )}
+        onPress={() => {}}
+      />
+
+      <DrawerItem
+        style={styles.drawerItem}
+        icon={() => (
+          <View style={styles.itemIconCircle}>
+            <Ionicons name="people-outline" size={16} color="#4b5563" />
+          </View>
+        )}
+        label={() => (
+          <LabelWrapper>
+            <Text style={styles.itemText}>KOL Management</Text>
+          </LabelWrapper>
+        )}
+        onPress={() => {}}
+      />
+
+      {/* BUSINESS OPERATIONS */}
+      <Text style={styles.sectionTitle}>BUSINESS OPERATIONS</Text>
+
+      <DrawerItem
+        style={styles.drawerItem}
+        icon={() => (
+          <View style={styles.itemIconCircle}>
+            <Ionicons name="business-outline" size={16} color="#4b5563" />
+          </View>
+        )}
+        label={() => (
+          <LabelWrapper>
+            <Text style={styles.itemText}>Distributor Management</Text>
+          </LabelWrapper>
+        )}
+        onPress={() => {}}
+      />
+
+      <DrawerItem
+        style={styles.drawerItem}
+        icon={() => (
+          <View style={styles.itemIconCircle}>
+            <Ionicons name="document-text-outline" size={16} color="#4b5563" />
+          </View>
+        )}
+        label={() => (
+          <LabelWrapper>
+            <View style={styles.itemLeft}>
+              <Text style={styles.itemText}>Bid Management</Text>
+              <View style={styles.badge}>
+                <Text style={styles.badgeText}>2</Text>
+              </View>
+            </View>
+          </LabelWrapper>
+        )}
+        onPress={() => {}}
+      />
+
+      <DrawerItem
+        style={styles.drawerItem}
+        icon={() => (
+          <View style={styles.itemIconCircle}>
+            <Ionicons name="git-compare-outline" size={16} color="#4b5563" />
+          </View>
+        )}
+        label={() => (
+          <LabelWrapper>
+            <Text style={styles.itemText}>PSP Integration</Text>
+          </LabelWrapper>
+        )}
+        onPress={() => {}}
+      />
+
+      {/* TEAM & LEARNING */}
+      <Text style={styles.sectionTitle}>TEAM & LEARNING</Text>
+
+      <DrawerItem
+        style={styles.drawerItem}
+        icon={() => (
+          <View style={styles.itemIconCircle}>
+            <Ionicons name="chatbubbles-outline" size={16} color="#4b5563" />
+          </View>
+        )}
+        label={() => (
+          <LabelWrapper>
+            <View style={styles.itemLeft}>
+              <Text style={styles.itemText}>Team Collaboration</Text>
+              <View style={styles.badge}>
+                <Text style={styles.badgeText}>4</Text>
+              </View>
+            </View>
+          </LabelWrapper>
+        )}
+        onPress={() => {}}
+      />
+
+      <DrawerItem
+        style={styles.drawerItem}
+        icon={() => (
+          <View style={styles.itemIconCircle}>
+            <Ionicons name="checkmark-done-outline" size={16} color="#4b5563" />
+          </View>
+        )}
+        label={() => (
+          <LabelWrapper>
+            <Text style={styles.itemText}>End-of-Day Review</Text>
+          </LabelWrapper>
+        )}
+        onPress={() => {}}
+      />
+
+      {/* COMPLIANCE & SUPPORT */}
+      <Text style={styles.sectionTitle}>COMPLIANCE & SUPPORT</Text>
+
+      <DrawerItem
+        style={styles.drawerItem}
+        icon={() => (
+          <View style={styles.itemIconCircle}>
+            <Ionicons name="shield-checkmark-outline" size={16} color="#4b5563" />
+          </View>
+        )}
+        label={() => (
+          <LabelWrapper>
+            <Text style={styles.itemText}>Compliance & Audit</Text>
+          </LabelWrapper>
+        )}
+        onPress={() => {}}
+      />
+
+      <DrawerItem
+        style={styles.drawerItem}
+        icon={() => (
+          <View style={styles.itemIconCircle}>
+            <Ionicons name="notifications-outline" size={16} color="#4b5563" />
+          </View>
+        )}
+        label={() => (
+          <LabelWrapper>
+            <View style={styles.itemLeft}>
+              <Text style={styles.itemText}>Notifications</Text>
+              <View style={styles.badge}>
+                <Text style={styles.badgeText}>8</Text>
+              </View>
+            </View>
+          </LabelWrapper>
+        )}
+        onPress={() => {}}
+      />
+
+      <DrawerItem
+        style={styles.drawerItem}
+        icon={() => (
+          <View style={styles.itemIconCircle}>
+            <Ionicons name="sparkles-outline" size={16} color="#4b5563" />
+          </View>
+        )}
+        label={() => (
+          <LabelWrapper>
+            <View style={styles.itemLeft}>
+              <Text style={styles.itemText}>System Highlights</Text>
+              <View style={styles.badge}>
+                <Text style={styles.badgeText}>6</Text>
+              </View>
+            </View>
+          </LabelWrapper>
+        )}
+        onPress={() => {}}
+      />
+
+      <DrawerItem
+        style={styles.drawerItem}
+        icon={() => (
+          <View style={styles.itemIconCircle}>
+            <Ionicons name="settings-outline" size={16} color="#4b5563" />
+          </View>
+        )}
+        label={() => (
+          <LabelWrapper>
+            <Text style={styles.itemText}>Settings</Text>
+          </LabelWrapper>
+        )}
+        onPress={() => {}}
+      />
+
+      {/* Logout - pinned visually at bottom of content */}
+      <TouchableOpacity
+        style={styles.logoutBtn}
+        onPress={() => {
+          // TODO: implement logout
+        }}
+      >
+        <Ionicons
+          name="log-out-outline"
+          size={18}
+          color="#ffffff"
+          style={{ marginRight: 8 }}
+        />
+        <Text style={styles.logoutText} onPress={()=>router.push('/screens/authentication/LoginScreen')}>Logout</Text>
+      </TouchableOpacity>
     </DrawerContentScrollView>
   );
 }
 
-// Define missing color constants
-const LUPIN_GREEN_LEFT = '#01963f';
-const LUPIN_GREEN_RIGHT = '#008a37';
+/* ----------------------- ROOT LAYOUT W/ DRAWER ----------------------- */
+
+const LUPIN_GREEN_LEFT = "#01963f";
+const LUPIN_GREEN_RIGHT = "#008a37";
 
 export default function RootLayout() {
   return (
     <Drawer
-      // provide custom drawer content so you can add items manually
       drawerContent={(props) => <CustomDrawerContent {...props} />}
-
       screenOptions={({ navigation }) => ({
-        drawerPosition: 'right',
-        headerTitleAlign: 'left',
-        // Left logo
+        drawerPosition: "right",
+        headerTitleAlign: "left",
+        drawerStyle: {
+          width: "45%",
+        },
+        // Left logo in header
         headerLeft: () => (
           <View style={{ marginLeft: 12, marginRight: 8 }}>
             <View style={styles.logoWrap}>
-              <Image source={require('../assets/images/logo-lu.png')} style={styles.logoImage} resizeMode="contain" />
+              <Image
+                source={require("../assets/images/logo-lu.png")}
+                style={styles.logoImage}
+                resizeMode="contain"
+              />
             </View>
           </View>
         ),
-        // Add a custom right button (hamburger)
+        // Right hamburger
         headerRight: () => (
           <Pressable
             onPress={() => navigation.toggleDrawer()}
@@ -254,30 +482,27 @@ export default function RootLayout() {
             <Ionicons name="menu" size={24} color={COLORS.utility.white} />
           </Pressable>
         ),
-        // Centered custom header title
         headerTitle: () => (
           <View style={styles.headerTitleContainer}>
             <Text style={styles.headerTitleText}>LUPIN CRM</Text>
             <Text style={styles.headerSubtitle}>Field Force Management</Text>
           </View>
         ),
-
-        // Header background (gradient)
         headerStyle: {
-          backgroundColor: 'transparent',
-          shadowColor: '#000',
+          backgroundColor: "transparent",
+          shadowColor: "#000",
           shadowOffset: { width: 0, height: 4 },
           shadowOpacity: 0.2,
           shadowRadius: 6,
           elevation: 4,
-          height: 80
+          height: 80,
         },
         headerBackground: () => (
           <LinearGradient
             colors={[LUPIN_GREEN_LEFT, LUPIN_GREEN_RIGHT]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
-            style={styles.container}
+            style={{ flex: 1 }}
           />
         ),
       })}
@@ -287,134 +512,227 @@ export default function RootLayout() {
   );
 }
 
+/* ----------------------------- STYLES ----------------------------- */
+
 const styles = StyleSheet.create({
+  drawerScrollContent: {
+    paddingBottom: 0,
+    backgroundColor: "transparent",
+  },
+
+  /* header bar of app */
   headerTitleContainer: {
-    alignItems: 'flex-start',
+    alignItems: "flex-start",
   },
   headerTitleText: {
     fontSize: 18,
-    color: 'white',
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
   },
   headerSubtitle: {
     fontSize: 12,
-    color: 'white',
+    color: "white",
   },
-  drawerHeader: {
+
+  /* Drawer brand header (inside drawer) */
+  brandHeader: {
+    backgroundColor: "#059669",
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: 'transparent',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "100%",
   },
-  container: { flex: 1, backgroundColor: '#fff', },
-  userDetailsContainer: {
-    marginBottom: 20,
-    backgroundColor: '#0A4DFF',
+  brandLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
   },
-
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 20,
-  },
-  avatar: { width: 60, height: 60, borderRadius: 30, marginRight: 15 },
-  name: { color: '#fff', fontSize: 18, fontWeight: 'bold' },
-  role: { color: '#E8E8E8', marginTop: 2 },
-  id: { color: '#D0D0D0', marginTop: 3 },
-
-  infoBox: {
-    padding: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    backdropFilter: 'blur(50px)',
-    margin: 20,
-    marginTop: 0,
+  brandLogoWrap: {
+    width: 36,
+    height: 36,
     borderRadius: 8,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    backgroundColor: "#ffffff",
+    alignItems: "center",
+    justifyContent: "center",
   },
-  detailscontainer: {
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
+  brandLogoImage: {
+    width: 24,
+    height: 24,
   },
-  infoLabel: { color: '#fff', fontSize: 12 },
-  infoValue: {
-    color: '#fff',
-    fontSize: 14,
-    fontWeight: 'bold',
-    marginBottom: 8,
+  brandTitle: {
+    color: "#ffffff",
+    fontSize: 16,
+    fontWeight: "800",
+  },
+  brandSubtitle: {
+    color: "#e5f7ec",
+    fontSize: 11,
+  },
+
+  /* Blue user card */
+  userCard: {
+    backgroundColor: "#2152f3",
+    paddingHorizontal: 18,
+    paddingVertical: 16,
+    width: "100%",
+  },
+  userRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 14,
+  },
+  avatar: {
+    width: 54,
+    height: 54,
+    borderRadius: 999,
+    backgroundColor: "rgba(255,255,255,0.15)",
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 14,
+  },
+  avatarInitial: {
+    color: "#ffffff",
+    fontSize: 24,
+    fontWeight: "700",
+  },
+  name: {
+    color: "#ffffff",
+    fontSize: 18,
+    fontWeight: "700",
+  },
+  role: {
+    color: "#e5e7eb",
+    fontSize: 12,
+    marginTop: 2,
+  },
+  id: {
+    color: "#d1d5db",
+    fontSize: 11,
+    marginTop: 2,
+  },
+  userPillsRow: {
+    flexDirection: "row",
+    gap: 10,
+  },
+  userPill: {
+    flex: 1,
+    backgroundColor: "rgba(255,255,255,0.16)",
+    borderRadius: 12,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+  },
+  pillLabel: {
+    color: "#d1d5db",
+    fontSize: 11,
+  },
+  pillValue: {
+    color: "#ffffff",
+    fontSize: 13,
+    fontWeight: "700",
+    marginTop: 4,
   },
 
   sectionTitle: {
-    paddingHorizontal: 20,
-    paddingTop: 20,
-    fontSize: 12,
-    color: '#888',
+    paddingHorizontal: 18,
+    paddingTop: 18,
+    fontSize: 11,
+    color: "#9ca3af",
+    fontWeight: "700",
   },
 
-  item: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 18,
-    marginHorizontal: 10,
-    borderBottomWidth: 0.5,
-    borderColor: '#eee',
+  drawerItem: {
+    marginHorizontal: 6,
+    marginVertical: 0,
   },
-  itemText: { fontSize: 16 },
+
+  itemIconCircle: {
+    width: 28,
+    height: 28,
+    borderRadius: 999,
+    backgroundColor: "#f3f4f6",
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: 4,
+  },
+
+  itemText: {
+    fontSize: 14,
+    color: "#111827",
+  },
 
   badge: {
-    backgroundColor: '#ff3d3d',
-    borderRadius: 12,
+    backgroundColor: "#e11d48",
+    borderRadius: 999,
     paddingHorizontal: 8,
     paddingVertical: 2,
-    marginLeft: 5,
+    marginLeft: 8,
+    minWidth: 22,
+    alignItems: "center",
   },
-  badgeText: { color: '#fff', fontSize: 12 },
+  badgeText: {
+    color: "#ffffff",
+    fontSize: 11,
+    fontWeight: "700",
+  },
 
-  tag: {
-    backgroundColor: '#6C63FF',
-    color: '#fff',
+  newTag: {
+    marginLeft: 10,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 999,
+    backgroundColor: "#a855f7",
+  },
+  newTagText: {
+    color: "#ffffff",
     fontSize: 10,
-    borderRadius: 10,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    marginRight: 0,
-    marginLeft: 20,
+    fontWeight: "700",
   },
 
   logoutBtn: {
-    backgroundColor: '#FF4D4D',
-    padding: 15,
-    margin: 20,
-    borderRadius: 6,
-    alignItems: 'center',
-  },
-  logoutText: { color: '#fff', fontSize: 16, fontWeight: 'bold' },
-
-  // add styles used by the new helpers
-  labelContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    marginHorizontal: 18,
+    marginTop: 22,
     paddingVertical: 12,
-    paddingHorizontal: 10,
+    borderRadius: 999,
+    backgroundColor: "#dc2626",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  logoutText: {
+    color: "#ffffff",
+    fontSize: 14,
+    fontWeight: "700",
+  },
+
+  labelContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingVertical: 4,
+    paddingRight: 4,
   },
   labelLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
   },
   itemLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
+
   logoWrap: {
     width: 40,
     height: 40,
     borderRadius: 8,
-    backgroundColor: '#ffffff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#ffffff",
+    alignItems: "center",
+    justifyContent: "center",
   },
-  logoImage: { width: 28, height: 28 },
+  logoImage: {
+    width: 28,
+    height: 28,
+  },
 });
