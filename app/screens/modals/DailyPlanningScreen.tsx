@@ -56,7 +56,7 @@ const DailyPlanningScreen: React.FC<any> = ({setWelcomeModal}) => {
               </View>
             </View>
             <TouchableOpacity style={styles.closeButton}>
-              <Text style={styles.closeText}>×</Text>
+              <Text style={styles.closeText} onPress={()=>setWelcomeModal(false)}>×</Text>
             </TouchableOpacity>
           </View>
 
