@@ -146,7 +146,7 @@ function CustomDrawerContent(props: any) {
         )}
         label={() => (
           <LabelWrapper>
-            <Text style={styles.itemText}>Leave & Attendance</Text>
+            <Text style={styles.itemText} onPress={()=>router.push('/screens/field-activities/leave-attendance')}>Leave & Attendance</Text>
           </LabelWrapper>
         )}
         onPress={() => {}}
@@ -162,7 +162,7 @@ function CustomDrawerContent(props: any) {
         label={() => (
           <LabelWrapper>
             <View style={styles.itemLeft}>
-              <Text style={styles.itemText}>Sample Tracking</Text>
+              <Text style={styles.itemText} onPress={()=>router.push('/screens/sampleTracking')}>Sample Tracking</Text>
               <View style={styles.badge}>
                 <Text style={styles.badgeText}>3</Text>
               </View>
