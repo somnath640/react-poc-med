@@ -29,29 +29,61 @@ export default function AnalyticsScreen() {
   return (
     <SafeAreaView style={styles.screen}>
       {/* GREEN PAGE HEADER */}
-      <LinearGradient
-        colors={[COLORS.brand.lupinGreen, COLORS.brand.lupinGreenDark]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.header}
-      >
-        <View style={styles.headerLeft}>
-          <TouchableOpacity
-            style={styles.backBtn}
-            onPress={() => console.log("Back")}
-          >
-            <Text style={styles.backIcon}>‹</Text>
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>Analytics &amp; Reports</Text>
-        </View>
+      <View
+  style={{
+    width: "100%",
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: "transparent",
+  }}
+>
+  {/* LEFT */}
+  <View
+    style={{
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 10,
+    }}
+  >
+    
 
-        <TouchableOpacity
-          style={styles.headerRightBtn}
-          onPress={() => console.log("Change range")}
-        >
-          <Text style={styles.headerRightText}>This Month ⌵</Text>
-        </TouchableOpacity>
-      </LinearGradient>
+    <Text
+      style={{
+        fontSize: 22,
+        fontWeight: "400",
+        color: "#111827",
+      }}
+    >
+      Analytics &amp; Reports
+    </Text>
+  </View>
+
+  {/* RIGHT BTN */}
+  <TouchableOpacity
+    onPress={() => console.log("Change range")}
+    style={{
+      paddingHorizontal: 12,
+      paddingVertical: 6,
+      borderRadius: 999,
+      borderWidth: 1,
+      borderColor: "#d1d5db",
+      backgroundColor: "#ffffff",
+    }}
+  >
+    <Text
+      style={{
+        fontSize: 13,
+        fontWeight: "600",
+        color: "#111827",
+      }}
+    >
+      This Month ⌵
+    </Text>
+  </TouchableOpacity>
+</View>
 
       {/* BODY */}
       <ScrollView

@@ -1,3 +1,4 @@
+import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import {
@@ -15,16 +16,13 @@ import {
 import FilterRoutesDrawer from "@/components/FilterRoutesDrawer";
 import ModalHcpProfile from "@/components/ModalHcpProfile";
 import COLORS from "../../constants/LupinColors";
-import {
-  IconPlan,
-  IconSparkles
-} from "../../constants/LupinIcons";
+import { IconPlan, IconSparkles } from "../../constants/LupinIcons";
 import AddHCPModal from "../screens/hcp-tab-screen/AddHCPModal";
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 /* -------------------------------------------------------------------------- */
-/*  PAGE HEADER (green, page name + Add button)                               */
+/*  PAGE HEADER (title + Add button)                                          */
 /* -------------------------------------------------------------------------- */
 
 type PageHeaderProps = {
@@ -35,22 +33,26 @@ type PageHeaderProps = {
 
 const PageHeader: React.FC<PageHeaderProps> = ({ title, onBack, onAdd }) => {
   return (
-    <View style={[styles.header, { backgroundColor: 'transparent' }]}>
-  <View style={styles.headerLeft}>
-    <TouchableOpacity onPress={onBack} style={styles.backBtn}>
-      <Text style={styles.backIcon}>‹</Text>
-    </TouchableOpacity>
-    <Text style={styles.headerTitle}>{title}</Text>
-  </View>
+    <View style={styles.header}>
+      <View style={styles.headerLeft}>
+        {onBack && (
+          <TouchableOpacity onPress={onBack} style={styles.backBtn}>
+            <Ionicons name="chevron-back" size={20} color={COLORS.gray[800]} />
+          </TouchableOpacity>
+        )}
+        <Text style={styles.headerTitle}>{title}</Text>
+      </View>
 
-  <TouchableOpacity style={styles.addBtn} onPress={onAdd}>
-    <Text style={styles.addPlus}>+</Text>
-    <Text style={styles.addText}>Add HCP</Text>
-  </TouchableOpacity>
-</View>
-
+      {onAdd && (
+        <TouchableOpacity style={styles.addBtn} onPress={onAdd}>
+          <Text style={styles.addPlus}>+</Text>
+          <Text style={styles.addText}>Add HCP</Text>
+        </TouchableOpacity>
+      )}
+    </View>
   );
 };
+
 
 /* -------------------------------------------------------------------------- */
 /*  FILTER MODAL (full page style)                                            */
@@ -73,9 +75,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
         <View style={styles.filterHeader}>
           <View>
             <Text style={styles.filterTitle}>Filter HCPs</Text>
-            <Text style={styles.filterSubtitle}>
-              Filter by tier and specialty
-            </Text>
+            <Text style={styles.filterSubtitle}>Filter by tier and specialty</Text>
           </View>
           <TouchableOpacity onPress={onClose}>
             <Text style={styles.filterClose}>×</Text>
@@ -124,7 +124,8 @@ type Doctor = {
 
 const DoctorCard: React.FC<{ doctor: Doctor }> = ({ doctor }) => {
   const [modalVisible, setModalVisible] = useState(false);
-    const closeModal = () => setModalVisible(false);
+  const closeModal = () => setModalVisible(false);
+
   const tierBg =
     doctor.tier === "Gold"
       ? "#FBBF24"
@@ -158,10 +159,9 @@ const DoctorCard: React.FC<{ doctor: Doctor }> = ({ doctor }) => {
           </View>
         </View>
       </View>
-<ModalHcpProfile 
-                    visible={modalVisible} 
-                    onClose={closeModal} 
-                  />
+
+      <ModalHcpProfile visible={modalVisible} onClose={closeModal} />
+
       <View style={styles.docStatsRow}>
         <Text style={styles.docStatText}>
           Last Visit: <Text style={styles.docStatStrong}>{doctor.lastVisit}</Text>
@@ -172,7 +172,10 @@ const DoctorCard: React.FC<{ doctor: Doctor }> = ({ doctor }) => {
         </Text>
       </View>
 
-      <TouchableOpacity style={styles.docProfileBtn} onPress={() => setModalVisible(true)}>
+      <TouchableOpacity
+        style={styles.docProfileBtn}
+        onPress={() => setModalVisible(true)}
+      >
         <IconPlan size={16} color={COLORS.gray[700]} />
         <Text style={styles.docProfileText}>View 360° Profile</Text>
       </TouchableOpacity>
@@ -244,28 +247,43 @@ const HcpsScreen: React.FC = () => {
       {/* Page Header */}
       <PageHeader
         title="HCP Management"
-        onBack={() => console.log("Back pressed")}
+        // onBack={() => console.log("Back pressed")}
         onAdd={() => setModalVisible(true)}
       />
-      <AddHCPModal visible={modalVisible} onClose={()=>setModalVisible(false)} onSubmit={()=>setModalVisible(false)} />
+      <AddHCPModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        onSubmit={() => setModalVisible(false)}
+      />
 
       {/* Content */}
       <View style={styles.body}>
         {/* Search + Filter */}
         <View style={styles.searchRow}>
           <View style={styles.searchContainer}>
-            <Text style={styles.searchIcon}>🔍</Text>
+            <Ionicons
+              name="search-outline"
+              size={16}
+              color={COLORS.gray[400]}
+              style={{ marginRight: 6 }}
+            />
             <TextInput
               placeholder="Search HCPs by name, specialty, or location..."
               placeholderTextColor={COLORS.gray[400]}
               style={styles.searchInput}
             />
           </View>
+
           <TouchableOpacity
             style={styles.filtersBtn}
             onPress={() => setFilterVisible(true)}
           >
-            <Text style={styles.filtersIcon}>☰</Text>
+            <Ionicons
+              name="funnel-outline"
+              size={16}
+              color={COLORS.gray[800]}
+              style={{ marginRight: 4 }}
+            />
             <Text style={styles.filtersText}>Filters</Text>
           </TouchableOpacity>
         </View>
@@ -288,8 +306,7 @@ const HcpsScreen: React.FC = () => {
               <View style={{ flexShrink: 1 }}>
                 <Text style={styles.aiTitle}>AI HCP Intelligence</Text>
                 <Text style={styles.aiSubtitle}>
-                  3 high-value HCPs identified for this week. Predicted
-                  conversion rate: 87%
+                  3 high-value HCPs identified for this week. Predicted conversion rate: 87%
                 </Text>
               </View>
             </View>
@@ -335,13 +352,7 @@ const HcpsScreen: React.FC = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Filter modal */}
-      {/* <FilterModal
-        visible={filterVisible}
-        onClose={() => setFilterVisible(false)}
-        totalCount={mockDoctors.length}
-      /> */}
-      {/* Sidebar drawer */}
+      {/* Sidebar drawer for filters */}
       <FilterRoutesDrawer
         visible={filterVisible}
         onClose={() => setFilterVisible(false)}
@@ -364,14 +375,14 @@ const styles = StyleSheet.create({
   },
 
   header: {
-    paddingTop: 44,
-    paddingBottom: 14,
+    paddingTop: 8,
+    paddingBottom: 8,
     paddingHorizontal: 16,
-    backgroundColor: COLORS.brand.lupinGreen,
+    backgroundColor: "transparent",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    elevation: 4,
+    elevation: 0,
   },
   headerLeft: {
     flexDirection: "row",
@@ -382,60 +393,54 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     marginRight: 6,
   },
-  backIcon: {
-    color: COLORS.utility.white,
-    fontSize: 26,
-    fontWeight: "300",
-  },
   headerTitle: {
-    color: COLORS.utility.black,
+    color: COLORS.gray[900],
     fontSize: 20,
     fontWeight: "600",
   },
   addBtn: {
-    flexDirection: "row",
-    backgroundColor: "#04040D",
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: 12,
-    alignItems: "center",
-    gap: 6,
-  },
-  addPlus: {
-    color: COLORS.utility.white,
-    fontSize: 18,
-    marginBottom: 1,
-  },
-  addText: {
-    color: COLORS.utility.white,
-    fontSize: 14,
-    fontWeight: "500",
-  },
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "center",
+  paddingHorizontal: 18,
+  paddingVertical: 6,
+  borderRadius: 12,          // full pill
+  backgroundColor: "#020617", // deep almost-black
+},
+
+addPlus: {
+  color: "#ffffff",
+  fontSize: 14,
+  fontWeight: "600",
+  marginRight: 6,
+},
+
+addText: {
+  color: "#ffffff",
+  fontSize: 13,
+  fontWeight: "700",
+},
+
 
   body: {
     flex: 1,
-    paddingHorizontal: 12,
     paddingTop: 10,
   },
 
   searchRow: {
     flexDirection: "row",
     alignItems: "center",
+    paddingHorizontal: 16,
+    paddingTop: 4,
     gap: 8,
   },
   searchContainer: {
     flex: 1,
-    backgroundColor: COLORS.utility.white,
+    backgroundColor: "#f3f4f6",
     borderRadius: 999,
-    borderWidth: 1,
-    borderColor: COLORS.gray[300],
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 12,
-  },
-  searchIcon: {
-    marginRight: 6,
-    fontSize: 16,
   },
   searchInput: {
     flex: 1,
@@ -446,16 +451,12 @@ const styles = StyleSheet.create({
   filtersBtn: {
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 10,
+    paddingHorizontal: 14,
     paddingVertical: 8,
     borderRadius: 999,
     backgroundColor: COLORS.utility.white,
     borderWidth: 1,
     borderColor: COLORS.gray[300],
-  },
-  filtersIcon: {
-    marginRight: 4,
-    fontSize: 14,
   },
   filtersText: {
     fontSize: 13,
@@ -466,6 +467,7 @@ const styles = StyleSheet.create({
   scrollContent: {
     paddingBottom: 80,
     paddingTop: 10,
+    paddingHorizontal: 12,
   },
 
   aiBanner: {
@@ -590,22 +592,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 4,
   },
-   modalOverlay: {
-    flex: 1,
-    backgroundColor: "rgba(0,0,0,0.5)",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  modalContent: {
-    width: 300,
-    padding: 20,
-    backgroundColor: "white",
-    borderRadius: 8,
-    alignItems: "center",
-  },
-  modalTitle: { fontSize: 18, fontWeight: "bold", marginBottom: 10 },
-  closeBtn: { marginTop: 20, padding: 10, backgroundColor: "#ddd", borderRadius: 5 },
-  closeText: { fontSize: 16 },
   docLocationBullet: {
     fontSize: 12,
     marginRight: 4,

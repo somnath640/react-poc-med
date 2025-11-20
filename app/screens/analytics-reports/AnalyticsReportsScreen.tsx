@@ -581,8 +581,8 @@ const styles = StyleSheet.create({
     fontWeight: "300",
   },
   headerTitle: {
-    fontSize: 20,
-    fontWeight: "600",
+    fontSize: 22,
+    fontWeight: "400",
     color: COLORS.utility.white,
   },
   headerRightBtn: {

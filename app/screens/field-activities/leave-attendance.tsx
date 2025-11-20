@@ -1,203 +1,597 @@
-// App.tsx
-import React, { JSX } from "react";
+import { Ionicons } from "@expo/vector-icons";
+import React, { useMemo, useState } from "react";
 import {
   Pressable,
   SafeAreaView,
   ScrollView,
-  StatusBar,
+  StyleSheet,
   Text,
   View,
-  useWindowDimensions,
 } from "react-native";
 
-/* ---------- Types & Data ---------- */
-type Leave = {
+type LeaveType = {
+  key: string;
+  label: string;
+  used: number;
+  total: number;
+};
+
+const LEAVE_TYPES: LeaveType[] = [
+  { key: "casual", label: "Casual Leave", used: 3, total: 15 },
+  { key: "sick", label: "Sick Leave", used: 2, total: 10 },
+  { key: "earned", label: "Earned Leave", used: 5, total: 20 },
+  { key: "compOff", label: "Compensatory Off", used: 3, total: 5 },
+];
+
+type LeaveStatus = "Pending" | "Approved";
+
+type LeaveRequest = {
   id: string;
   type: string;
   date: string;
   days: string;
-  status: "Pending" | "Approved";
+  status: LeaveStatus;
 };
 
-const LEAVES: Leave[] = [
+const LEAVE_REQUESTS: LeaveRequest[] = [
   { id: "1", type: "Casual Leave", date: "Nov 10, 2025", days: "1 day", status: "Pending" },
-  { id: "2", type: "Sick Leave", date: "Oct 2, 2025", days: "2 days", status: "Approved" },
+  { id: "2", type: "Sick Leave", date: "Nov 3–4, 2025", days: "2 days", status: "Approved" },
+  { id: "3", type: "Earned Leave", date: "Oct 21–23, 2025", days: "3 days", status: "Approved" },
+  { id: "4", type: "Compensatory Off", date: "Oct 5, 2025", days: "1 day", status: "Approved" },
 ];
 
-/* ---------- Helpers ---------- */
-/** returns container width & layout breakpoint flags */
-function useResponsiveWidths() {
-  const { width } = useWindowDimensions();
-
-  // breakpoints you can tune
-  const PHONE_MAX = 1000;  // phone cap
-  const TABLET_MAX = 1400; // tablet cap
-  const DESKTOP_MAX = 1800; // large screens cap
-
-  // determine "mode"
-  const isTablet = width >= 768 && width < 1200; // you can tune
-  const isLaptop = width >= 1200;
-
-  // compute effective container width (centered)
-  let container = Math.min(width - 32, PHONE_MAX); // default padding 16 both sides
-  if (isTablet) container = Math.min(width - 64, TABLET_MAX);
-  if (isLaptop) container = Math.min(width - 160, DESKTOP_MAX);
-
-  return { width, container, isTablet, isLaptop };
-}
-
-/* ---------- App ---------- */
 export default function LeaveAttendence(): JSX.Element {
-  const { width, container, isTablet, isLaptop } = useResponsiveWidths();
+  const [activeTab, setActiveTab] = useState<"Pending" | "Approved" | "All">("Pending");
 
-  // data
-  const checkIn = "08:45 AM";
-  const leaveBalance = {
-    casual: { used: 3, available: 12, total: 15 },
-    sick: { used: 2, available: 8, total: 10 },
-    earned: { used: 5, available: 15, total: 20 },
-    comp: { used: 3, available: 2, total: 5 },
-  };
+  const filteredRequests = useMemo(() => {
+    if (activeTab === "All") return LEAVE_REQUESTS;
+    return LEAVE_REQUESTS.filter((r) => r.status === activeTab);
+  }, [activeTab]);
 
-  // layout flags used inside render
-  const twoColumnStats = isTablet || isLaptop; // show side-by-side
-  const twoColumnAttendance = isTablet || isLaptop;
+  const pendingCount = LEAVE_REQUESTS.filter((r) => r.status === "Pending").length;
+  const approvedCount = LEAVE_REQUESTS.filter((r) => r.status === "Approved").length;
 
   return (
-    <SafeAreaView className="flex-1 bg-slate-50">
-      <StatusBar barStyle="dark-content" backgroundColor="#f8fafc" />
-      <ScrollView contentContainerStyle={{ paddingVertical: 20 }}>
-        {/* CENTERED CONTAINER — width driven by JS fallback but still uses NativeWind classes */}
-        <View style={{ width: container, alignSelf: "center" }} className="px-2">
-          {/* HEADER */}
-          <View className="flex-row justify-between items-center mb-4 px-1">
-            <Text className="text-2xl font-extrabold text-slate-900">Leave & Attendance</Text>
-            <Pressable className="bg-slate-900 px-3 py-2 rounded-md">
-              <Text className="text-white font-semibold">+ Apply Leave</Text>
-            </Pressable>
-          </View>
+    <SafeAreaView style={styles.safe}>
+      <View style={styles.container}>
+        {/* HEADER */}
+        <View style={styles.headerRow}>
+          <Text style={styles.headerTitle}>Leave &amp; Attendance</Text>
 
-          {/* ATTENDANCE CARD */}
-          <View className="bg-emerald-50 border border-emerald-100 rounded-xl p-4 mb-6 relative">
-            <View className="mb-2">
-              <Text className="font-semibold text-slate-800">Today's Attendance</Text>
-              <Text className="text-slate-500 text-sm">Friday, November 7, 2025</Text>
-            </View>
-
-            {/* when wide, place side-by-side; otherwise stack */}
-            <View style={{ flexDirection: twoColumnAttendance ? "row" : "column", gap: 16 }}>
-              <View style={{ flex: 1 }} className="bg-white rounded-md p-3 border border-slate-100">
-                <Text className="text-slate-500 text-xs">Check-in</Text>
-                <Text className="text-lg font-extrabold text-emerald-600 mt-2">{checkIn}</Text>
-              </View>
-
-              <View style={{ width: twoColumnAttendance ? 160 : "100%" }} className="bg-white rounded-md p-3 border border-slate-100">
-                <Text className="text-slate-500 text-xs">Status</Text>
-                <View className="mt-2">
-                  <View className="bg-emerald-600 px-2 py-1 rounded-full self-start">
-                    <Text className="text-white font-semibold text-xs">On Time</Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-
-            <Pressable className="bg-white mt-4 rounded-md p-3 border border-slate-100 items-center">
-              <Text className="font-semibold text-slate-700">Check Out</Text>
-            </Pressable>
-
-            <Text className="absolute right-4 top-4 text-2xl text-emerald-600">🗓️</Text>
-          </View>
-
-          {/* LEAVE BALANCE */}
-          <View className="bg-white rounded-xl border border-slate-100 p-4 mb-6">
-            <Text className="font-semibold mb-4">Leave Balance</Text>
-            <LeaveBar label="Casual Leave" used={leaveBalance.casual.used} total={leaveBalance.casual.total} rightLabel={`${leaveBalance.casual.available} of ${leaveBalance.casual.total} available`} note={`${leaveBalance.casual.used} days used this year`} />
-            <LeaveBar label="Sick Leave" used={leaveBalance.sick.used} total={leaveBalance.sick.total} rightLabel={`${leaveBalance.sick.available} of ${leaveBalance.sick.total} available`} note={`${leaveBalance.sick.used} days used this year`} />
-            <LeaveBar label="Earned Leave" used={leaveBalance.earned.used} total={leaveBalance.earned.total} rightLabel={`${leaveBalance.earned.available} of ${leaveBalance.earned.total} available`} note={`${leaveBalance.earned.used} days used this year`} />
-            <LeaveBar label="Compensatory Off" used={leaveBalance.comp.used} total={leaveBalance.comp.total} rightLabel={`${leaveBalance.comp.available} of ${leaveBalance.comp.total} available`} note={`${leaveBalance.comp.used} days used this year`} />
-          </View>
-
-          {/* TABS */}
-          <View className="flex-row bg-slate-100 rounded-full p-1 mb-6">
-            <Pressable className="flex-1 bg-white rounded-full py-2 items-center"><Text className="font-semibold">Pending (1)</Text></Pressable>
-            <Pressable className="flex-1 py-2 items-center"><Text>Approved (3)</Text></Pressable>
-            <Pressable className="flex-1 py-2 items-center"><Text>All (4)</Text></Pressable>
-          </View>
-
-          {/* LEAVE LIST (simple cards) */}
-          <View className="space-y-4 mb-6">
-            {LEAVES.map((l) => (
-              <View key={l.id} className="bg-white rounded-xl border border-slate-100 p-4">
-                <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start" }}>
-                  <View>
-                    <Text className="font-semibold">{l.type}</Text>
-                    <Text className="text-slate-500 text-sm mt-2">{l.date}</Text>
-                    <Text className="text-slate-500 text-sm mt-1">{l.days}</Text>
-                  </View>
-
-                  <View className="items-end">
-                    <View className="bg-violet-50 border border-violet-100 px-3 py-1 rounded-full">
-                      <Text className="text-violet-700 font-semibold text-xs">{l.status}</Text>
-                    </View>
-                  </View>
-                </View>
-
-                <View className="mt-4">
-                  <View className="h-2 bg-slate-100 rounded-md" />
-                  <Pressable className="mt-3 bg-slate-50 border border-slate-100 rounded-md py-2 items-center">
-                    <Text className="font-semibold">👁  View Details</Text>
-                  </Pressable>
-                </View>
-              </View>
-            ))}
-          </View>
-
-          {/* STATS: show two-per-row on tablet/laptop, stacked on phone */}
-          <View className="bg-sky-50 border border-sky-100 rounded-xl p-4 mb-12">
-            <Text className="font-semibold mb-4">This Month - November 2025</Text>
-
-            <View style={{ flexDirection: twoColumnStats ? "row" : "column", gap: 12 }}>
-              <StatBox title="Present Days" value="18" />
-              <StatBox title="Attendance Rate" value="92%" />
-            </View>
-
-            <View style={{ height: 12 }} />
-
-            <View style={{ flexDirection: twoColumnStats ? "row" : "column", gap: 12 }}>
-              <StatBox title="On Time" value="16" />
-              <StatBox title="Late Check-ins" value="2" highlight />
-            </View>
-          </View>
+          <Pressable
+            style={styles.applyBtn}
+            onPress={() => {
+              // open apply-leave modal
+            }}
+          >
+            <Ionicons name="add" size={16} color="#ffffff" />
+            <Text style={styles.applyBtnText}>Apply Leave</Text>
+          </Pressable>
         </View>
-      </ScrollView>
+
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+        >
+          {/* Today's Attendance */}
+          <View style={styles.attendanceCard}>
+            <View style={styles.cardHeaderRow}>
+              <View>
+                <Text style={styles.cardTitle}>Today&apos;s Attendance</Text>
+                <Text style={styles.cardSubtitle}>Friday, November 7, 2025</Text>
+              </View>
+
+              <View
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: 16,
+                  backgroundColor: "#dcfce7",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Ionicons name="calendar-outline" size={18} color="#16a34a" />
+              </View>
+            </View>
+
+            {/* check-in row */}
+            <View style={styles.checkInRow}>
+              <View style={{ flex: 3 }}>
+                <Text style={styles.checkInLabel}>Check-in</Text>
+                <Text style={styles.checkInTime}>08:45 AM</Text>
+              </View>
+
+              <View style={{ flex: 1, alignItems: "flex-start" }}>
+                <Text style={styles.checkInLabel}>Status</Text>
+                <View style={styles.statusPill}>
+                  <Text style={styles.statusPillText}>On Time</Text>
+                </View>
+              </View>
+            </View>
+
+            {/* Check-out button row */}
+            <Pressable
+              style={styles.checkoutRow}
+              onPress={() => {
+                // handle check-out
+              }}
+            >
+              <Text style={styles.checkoutText}>Check Out</Text>
+            </Pressable>
+          </View>
+
+          {/* Leave Balance */}
+          <View style={styles.balanceCard}>
+            <Text style={styles.cardTitle}>Leave Balance</Text>
+
+            {LEAVE_TYPES.map((leave) => {
+              const used = leave.used;
+              const total = leave.total;
+              const remaining = total - used;
+              const percentUsed = used / total;
+              return (
+                <View key={leave.key} style={{ marginTop: 14 }}>
+                  <View style={styles.balanceTopRow}>
+                    <Text style={styles.balanceLabel}>{leave.label}</Text>
+                    <Text style={styles.balanceRightText}>
+                      {remaining} of {total} available
+                    </Text>
+                  </View>
+
+                  <View style={styles.progressTrack}>
+                    <View
+                      style={[
+                        styles.progressFill,
+                        { width: `${percentUsed * 100}%` },
+                      ]}
+                    />
+                  </View>
+
+                  <Text style={styles.balanceUsedText}>
+                    {used} days used this year
+                  </Text>
+                </View>
+              );
+            })}
+          </View>
+
+          {/* Tabs */}
+          <View style={styles.segmentContainer}>
+            <SegmentTab
+              label={`Pending (${pendingCount})`}
+              active={activeTab === "Pending"}
+              onPress={() => setActiveTab("Pending")}
+            />
+            <SegmentTab
+              label={`Approved (${approvedCount})`}
+              active={activeTab === "Approved"}
+              onPress={() => setActiveTab("Approved")}
+            />
+            <SegmentTab
+              label={`All (${LEAVE_REQUESTS.length})`}
+              active={activeTab === "All"}
+              onPress={() => setActiveTab("All")}
+            />
+          </View>
+
+          {/* Leave Request cards */}
+          {filteredRequests.map((req) => (
+            <LeaveRequestCard key={req.id} req={req} />
+          ))}
+
+          {/* Monthly Stats */}
+          <View style={styles.monthCard}>
+            <Text style={styles.monthTitle}>This Month - November 2025</Text>
+
+            <View style={styles.monthGrid}>
+              <MonthStatTile
+                title="Present Days"
+                value="18"
+                valueColor="#16a34a"
+              />
+              <MonthStatTile
+                title="Attendance Rate"
+                value="92%"
+                valueColor="#111827"
+              />
+              <MonthStatTile
+                title="On Time"
+                value="16"
+                valueColor="#16a34a"
+              />
+              <MonthStatTile
+                title="Late Check-ins"
+                value="2"
+                valueColor="#f97316"
+              />
+            </View>
+          </View>
+
+          <View style={{ height: 24 }} />
+        </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }
 
-/* ---------- Small components ---------- */
-function LeaveBar({ label, used, total, rightLabel, note }: { label: string; used: number; total: number; rightLabel: string; note: string; }) {
-  const filled = Math.min(1, used / total);
+/* ---------- Small building blocks ---------- */
+
+function SegmentTab({
+  label,
+  active,
+  onPress,
+}: {
+  label: string;
+  active: boolean;
+  onPress: () => void;
+}) {
   return (
-    <View className="mb-4">
-      <View className="flex-row justify-between items-center mb-2">
-        <Text className="font-medium">{label}</Text>
-        <Text className="text-sm text-slate-600">{rightLabel}</Text>
+    <Pressable
+      onPress={onPress}
+      style={[styles.segmentTab, active && styles.segmentTabActive]}
+    >
+      <Text style={[styles.segmentLabel, active && styles.segmentLabelActive]}>
+        {label}
+      </Text>
+    </Pressable>
+  );
+}
+
+function LeaveRequestCard({ req }: { req: LeaveRequest }) {
+  const isPending = req.status === "Pending";
+
+  return (
+    <View style={styles.leaveCard}>
+      <View style={styles.leaveTopRow}>
+        <View>
+          <Text style={styles.leaveType}>{req.type}</Text>
+          <Text style={styles.leaveDate}>{req.date}</Text>
+          <Text style={styles.leaveDays}>{req.days}</Text>
+        </View>
+
+        <View style={{ alignItems: "flex-end" }}>
+          <View
+            style={[
+              styles.leaveStatusPill,
+              isPending ? styles.leaveStatusPending : styles.leaveStatusApproved,
+            ]}
+          >
+            <Ionicons
+              name={isPending ? "time-outline" : "checkmark-circle-outline"}
+              size={13}
+              color={isPending ? "#111827" : "#ffffff"}
+              style={{ marginRight: 4 }}
+            />
+            <Text
+              style={[
+                styles.leaveStatusText,
+                isPending && { color: "#111827" },
+              ]}
+            >
+              {req.status}
+            </Text>
+          </View>
+        </View>
       </View>
 
-      <View className="h-2 bg-slate-100 rounded-full overflow-hidden">
-        <View style={{ width: `${filled * 100}%` }} className="h-full bg-slate-900" />
-      </View>
-
-      <Text className="text-slate-500 text-xs mt-2">{note}</Text>
+      {/* View details row */}
+      <Pressable
+        style={styles.viewDetailsRow}
+        onPress={() => {
+          // open details
+        }}
+      >
+        <Ionicons name="eye-outline" size={16} color="#6b7280" />
+        <Text style={styles.viewDetailsText}>View Details</Text>
+      </Pressable>
     </View>
   );
 }
 
-function StatBox({ title, value, highlight = false }: { title: string; value: string; highlight?: boolean }) {
+function MonthStatTile({
+  title,
+  value,
+  valueColor,
+}: {
+  title: string;
+  value: string;
+  valueColor: string;
+}) {
   return (
-    <View className="flex-1 bg-white rounded-md p-3 border border-slate-100 mb-3">
-      <Text className="text-slate-500 text-xs">{title}</Text>
-      <Text className={`${highlight ? "text-red-500" : "text-slate-900"} mt-2 font-extrabold text-lg`}>{value}</Text>
+    <View style={styles.monthTile}>
+      <Text style={styles.monthTileTitle}>{title}</Text>
+      <Text style={[styles.monthTileValue, { color: valueColor }]}>{value}</Text>
     </View>
   );
 }
+
+/* ---------- styles ---------- */
+
+const styles = StyleSheet.create({
+  safe: {
+    flex: 1,
+    backgroundColor: "#f3f4f6",
+  },
+  container: {
+    flex: 1,
+  },
+  scrollContent: {
+    paddingHorizontal: 12,
+    paddingBottom: 24,
+  },
+  headerRow: {
+    paddingHorizontal: 16,
+    paddingTop: 8,
+    paddingBottom: 4,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  headerTitle: {
+    fontSize: 22,
+    fontWeight: "700",
+    color: "#111827",
+  },
+  applyBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 999,
+    backgroundColor: "#020617",
+  },
+  applyBtnText: {
+    color: "#ffffff",
+    fontWeight: "700",
+    fontSize: 13,
+  },
+
+  attendanceCard: {
+    backgroundColor: "#ecfdf3",
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "#bbf7d0",
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    marginBottom: 10,
+  },
+  cardHeaderRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  cardTitle: {
+    fontSize: 14,
+    fontWeight: "700",
+    color: "#111827",
+  },
+  cardSubtitle: {
+    fontSize: 12,
+    color: "#6b7280",
+    marginTop: 2,
+  },
+  checkInRow: {
+    flexDirection: "row",
+    backgroundColor: "#ffffff",
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#dcfce7",
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    marginBottom: 8,
+  },
+  checkInLabel: {
+    fontSize: 12,
+    color: "#6b7280",
+  },
+  checkInTime: {
+    fontSize: 20,
+    fontWeight: "800",
+    color: "#16a34a",
+    marginTop: 4,
+  },
+  statusPill: {
+    marginTop: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 999,
+    backgroundColor: "#16a34a",
+  },
+  statusPillText: {
+    fontSize: 11,
+    fontWeight: "700",
+    color: "#ffffff",
+  },
+  checkoutRow: {
+    marginTop: 6,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: "#bbf7d0",
+    backgroundColor: "#ffffff",
+    paddingVertical: 8,
+    alignItems: "center",
+  },
+  checkoutText: {
+    fontSize: 12,
+    color: "#111827",
+    fontWeight: "600",
+  },
+
+  balanceCard: {
+    backgroundColor: "#ffffff",
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "#e5e7eb",
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    marginBottom: 10,
+  },
+  balanceTopRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  balanceLabel: {
+    fontSize: 13,
+    fontWeight: "700",
+    color: "#111827",
+  },
+  balanceRightText: {
+    fontSize: 11,
+    color: "#6b7280",
+  },
+  progressTrack: {
+    height: 6,
+    borderRadius: 999,
+    backgroundColor: "#e5e7eb",
+    marginTop: 6,
+    overflow: "hidden",
+  },
+  progressFill: {
+    height: "100%",
+    backgroundColor: "#020617",
+  },
+  balanceUsedText: {
+    fontSize: 11,
+    color: "#6b7280",
+    marginTop: 4,
+  },
+
+  segmentContainer: {
+    flexDirection: "row",
+    borderRadius: 999,
+    backgroundColor: "#e5e7eb",
+    padding: 3,
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  segmentTab: {
+    flex: 1,
+    paddingVertical: 6,
+    borderRadius: 999,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  segmentTabActive: {
+    backgroundColor: "#ffffff",
+  },
+  segmentLabel: {
+    fontSize: 12,
+    color: "#4b5563",
+    fontWeight: "600",
+  },
+  segmentLabelActive: {
+    color: "#111827",
+    fontWeight: "700",
+  },
+
+  leaveCard: {
+    backgroundColor: "#ffffff",
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "#e5e7eb",
+    marginBottom: 10,
+    paddingHorizontal: 14,
+    paddingTop: 10,
+    paddingBottom: 0,
+  },
+  leaveTopRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+  },
+  leaveType: {
+    fontSize: 14,
+    fontWeight: "700",
+    color: "#111827",
+  },
+  leaveDate: {
+    fontSize: 12,
+    color: "#6b7280",
+    marginTop: 4,
+  },
+  leaveDays: {
+    fontSize: 12,
+    color: "#6b7280",
+    marginTop: 2,
+    marginBottom: 8,
+  },
+  leaveStatusPill: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 999,
+    borderWidth: 1,
+  },
+  leaveStatusPending: {
+    backgroundColor: "#f9fafb",
+    borderColor: "#d1d5db",
+  },
+  leaveStatusApproved: {
+    backgroundColor: "#16a34a",
+    borderColor: "#16a34a",
+  },
+  leaveStatusText: {
+    fontSize: 11,
+    fontWeight: "700",
+    color: "#ffffff",
+  },
+  viewDetailsRow: {
+    borderTopWidth: 1,
+    borderTopColor: "#e5e7eb",
+    paddingVertical: 8,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 6,
+    marginTop: 4,
+  },
+  viewDetailsText: {
+    fontSize: 13,
+    fontWeight: "600",
+    color: "#111827",
+  },
+
+  monthCard: {
+    backgroundColor: "#eff6ff",
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "#bfdbfe",
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    marginTop: 6,
+  },
+  monthTitle: {
+    fontSize: 14,
+    fontWeight: "700",
+    color: "#111827",
+    marginBottom: 10,
+  },
+  monthGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 10,
+  },
+  monthTile: {
+    flexBasis: "48%",
+    backgroundColor: "#ffffff",
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: "#e5e7eb",
+  },
+  monthTileTitle: {
+    fontSize: 12,
+    color: "#6b7280",
+  },
+  monthTileValue: {
+    fontSize: 20,
+    fontWeight: "800",
+    marginTop: 4,
+  },
+});
