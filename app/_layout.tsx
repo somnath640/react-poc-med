@@ -266,10 +266,11 @@ export default function RootLayout() {
         headerStyle: {
           backgroundColor: 'transparent',
           shadowColor: '#000',
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.12,
-          shadowRadius: 2,
-          elevation: 4, // for Android shadow
+          shadowOffset: { width: 0, height: 4 },
+          shadowOpacity: 0.2,
+          shadowRadius: 6,
+          elevation: 4,
+          height: 80
         },
         headerBackground: () => (
           <LinearGradient
