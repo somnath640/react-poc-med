@@ -127,7 +127,7 @@ function CustomDrawerContent(props: any) {
         label={() => (
           <LabelWrapper>
             <View style={styles.itemLeft}>
-              <Text style={styles.itemText}>Expense Management</Text>
+              <Text style={styles.itemText} onPress={()=>router.push('/screens/field-activities/expense-management')}>Expense Management</Text>
               <View style={styles.badge}>
                 <Text style={styles.badgeText}>2</Text>
               </View>
