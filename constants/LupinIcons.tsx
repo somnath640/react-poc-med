@@ -3,10 +3,11 @@
 
 import React from "react";
 import Svg, {
-    Circle,
-    Path,
-    Polyline,
-    Rect,
+  Circle,
+  Line,
+  Path,
+  Polyline,
+  Rect,
 } from "react-native-svg";
 
 export interface IconProps {
@@ -239,5 +240,18 @@ export const IconTinyTrendUp = (props: IconProps) => (
   <BaseIcon {...props} strokeWidth={2}>
     <Path d="M5 15l4-4 3 3 5-6" />
     <Path d="M13 8h4v4" />
+  </BaseIcon>
+);
+
+export const IconArrowLeft = (props: IconProps) => (
+  <BaseIcon {...props}>
+    <Path d="M15 7L9 12L15 17" /> 
+    <Line x1="9" y1="12" x2="17" y2="12" />
+  </BaseIcon>
+);
+
+export const IconBackIOS = (props: IconProps) => (
+  <BaseIcon {...props}>
+    <Path d="M15 6L9 12L15 18" />
   </BaseIcon>
 );

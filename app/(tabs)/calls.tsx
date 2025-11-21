@@ -3,13 +3,13 @@ import { FontAwesome5, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import React, { useMemo, useState } from "react";
 import {
   Pressable,
-  SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import ReportNewCallModal from "../modals/ReportNewCallModal";
 
 type CallStatus = "Submitted" | "Approved";

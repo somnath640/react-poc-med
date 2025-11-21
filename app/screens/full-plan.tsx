@@ -1,10 +1,11 @@
 // full-plan.tsx
 import {
     Feather,
-    FontAwesome5,
+    Ionicons,
     MaterialCommunityIcons,
-    MaterialIcons,
+    MaterialIcons
 } from '@expo/vector-icons';
+import { router, useNavigation } from 'expo-router';
 import React from 'react';
 import {
     ScrollView,
@@ -43,6 +44,7 @@ const doctors = [
 ];
 
 const FullPlan: React.FC = () => {
+    const navigation = useNavigation();
   return (
     <View style={styles.root}>
       <StatusBar barStyle="light-content" backgroundColor={COLORS.green} />
@@ -51,7 +53,9 @@ const FullPlan: React.FC = () => {
       <View style={styles.header}>
         <View style={styles.headerLeft}>
           <View style={styles.logoCircle}>
-            <FontAwesome5 name="clinic-medical" size={14} color={COLORS.green} />
+            <TouchableOpacity>
+                          <Ionicons name="chevron-back" size={20} onPress={() =>  router.replace({ pathname: '/(tabs)', params: { openDrawer: '1' } } as any) }/>
+                        </TouchableOpacity>
           </View>
           <View>
             <Text style={styles.headerTitle}>LUPIN CRM</Text>

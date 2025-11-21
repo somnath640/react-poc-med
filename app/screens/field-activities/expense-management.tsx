@@ -1,5 +1,6 @@
 // ExpenseManagement.tsx
 import { Ionicons } from "@expo/vector-icons";
+import { router, useNavigation } from "expo-router";
 import React, { JSX, useMemo, useState } from "react";
 import {
   Modal,
@@ -9,6 +10,7 @@ import {
   StatusBar,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
   useWindowDimensions
 } from "react-native";
@@ -299,7 +301,7 @@ const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
               }
             />
 
-            {/* TA/DA Layout (existing one, shortened a bit for brevity) */}
+            {/* TA/DA Layout */}
             {!isOther && (
               <>
                 <TextField label="Date *" placeholder="dd-mm-yyyy" />
@@ -496,7 +498,7 @@ const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
               </>
             )}
 
-            {/* OTHER EXPENSES Layout (new) */}
+            {/* OTHER EXPENSES Layout */}
             {isOther && (
               <>
                 <TextField label="Date *" placeholder="dd-mm-yyyy" />
@@ -504,20 +506,23 @@ const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
                   label="Location *"
                   placeholder="Visit location/City"
                 />
-               <SelectField
-  label="Other Expense Type *"
-  value={otherExpenseType}
-  placeholder="Select expense type"
-  options={[
-    { value: "Outstation", label: "Outstation Call" },
-    { value: "NextStation", label: "Next Station Call" },
-    { value: "Conference", label: "Conference/Event" },
-    { value: "Training", label: "Training Program" },
-    { value: "ClientEntertainment", label: "Client Entertainment" },
-    { value: "Misc", label: "Miscellaneous" },
-  ]}
-  onChange={(val) => setOtherExpenseType(val)}
-/>
+                <SelectField
+                  label="Other Expense Type *"
+                  value={otherExpenseType}
+                  placeholder="Select expense type"
+                  options={[
+                    { value: "Outstation", label: "Outstation Call" },
+                    { value: "NextStation", label: "Next Station Call" },
+                    { value: "Conference", label: "Conference/Event" },
+                    { value: "Training", label: "Training Program" },
+                    {
+                      value: "ClientEntertainment",
+                      label: "Client Entertainment",
+                    },
+                    { value: "Misc", label: "Miscellaneous" },
+                  ]}
+                  onChange={(val) => setOtherExpenseType(val)}
+                />
                 <TextField
                   label="Amount (₹) *"
                   placeholder="Enter amount"
@@ -881,7 +886,6 @@ const GeographicalZonesModal: React.FC<ZonesModalProps> = ({
   );
 };
 
-
 /* ---------- Expense Details Modal ---------- */
 
 type DetailsModalProps = {
@@ -1230,24 +1234,107 @@ export default function ExpenseManagement(): JSX.Element {
   const [selectedExpense, setSelectedExpense] = useState<Expense | null>(
     null
   );
+  const [zonesVisible, setZonesVisible] = useState(false);
 
   const monthlyEligibility = 25000;
   const claimed = 18450;
   const pending = 3250;
   const remaining = monthlyEligibility - claimed - pending;
   const progress = Math.min(1, (claimed + pending) / monthlyEligibility);
+   const navigation = useNavigation();
 
   const filteredExpenses = useMemo(() => {
     if (activeTab === "All") return EXPENSES;
     return EXPENSES.filter((e) => e.status === activeTab);
   }, [activeTab]);
-const [zonesVisible, setZonesVisible] = useState(false);
+
   const summaryHorizontal = !isPhone;
   const statsTwoCol = !isPhone;
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#f8fafc" }}>
-      <StatusBar barStyle="dark-content" backgroundColor="#f8fafc" />
+      <StatusBar barStyle="light-content" backgroundColor="#0a8b36" />
+
+      {/* ----- LUPIN CRM HEADER (NO BACK BUTTON) ----- */}
+      <View
+        style={{
+          backgroundColor: "#0a8b36",
+          paddingHorizontal: 16,
+          paddingVertical: 13,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        {/* Logo + App Name */}
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View
+            style={{
+              width: 30,
+              height: 30,
+              borderRadius: 15,
+              backgroundColor: "#ffffff",
+              alignItems: "center",
+              justifyContent: "center",
+              marginRight: 8,
+            }}
+          >
+            <TouchableOpacity>
+                          <Ionicons name="chevron-back" size={20} onPress={() =>  router.replace({ pathname: '/(tabs)', params: { openDrawer: '1' } } as any) }/>
+                        </TouchableOpacity>
+          </View>
+
+          <View>
+            <Text
+              style={{
+                color: "#ffffff",
+                fontSize: 15,
+                fontWeight: "700",
+              }}
+            >
+              LUPIN CRM
+            </Text>
+            <Text style={{ color: "#d9ffd7", fontSize: 11 }}>
+              Field Force Management
+            </Text>
+          </View>
+        </View>
+
+        {/* 3-dot menu */}
+        <View
+          style={{
+            alignItems: "flex-end",
+            justifyContent: "space-between",
+            height: 16,
+          }}
+        >
+          <View
+            style={{
+              width: 3,
+              height: 3,
+              borderRadius: 2,
+              backgroundColor: "#ffffff",
+            }}
+          />
+          <View
+            style={{
+              width: 3,
+              height: 3,
+              borderRadius: 2,
+              backgroundColor: "#ffffff",
+            }}
+          />
+          <View
+            style={{
+              width: 3,
+              height: 3,
+              borderRadius: 2,
+              backgroundColor: "#ffffff",
+            }}
+          />
+        </View>
+      </View>
+
       <ScrollView contentContainerStyle={{ paddingVertical: 20 }}>
         <View
           style={{
@@ -1256,13 +1343,14 @@ const [zonesVisible, setZonesVisible] = useState(false);
             paddingHorizontal: 8,
           }}
         >
-          {/* Header */}
+          {/* Screen Title + Add button */}
           <View
             style={{
               flexDirection: "row",
               justifyContent: "space-between",
               alignItems: "center",
               marginBottom: 16,
+              marginTop: 4,
             }}
           >
             <Text
@@ -1551,76 +1639,75 @@ const [zonesVisible, setZonesVisible] = useState(false);
           </View>
 
           {/* Policy box */}
-<View
-  style={{
-    backgroundColor: "#ecfeff",
-    borderRadius: 12,
-    padding: 14,
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: "#e0f2fe",
-  }}
->
-  {/* Title + View Zones on the right */}
-  <View
-    style={{
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
-      marginBottom: 6,
-    }}
-  >
-    <View style={{ flexDirection: "row", alignItems: "center" }}>
-      <Ionicons
-        name="information-circle-outline"
-        size={14}
-        color="#06b6d4"
-        style={{ marginRight: 6 }}
-      />
-      <Text
-        style={{
-          fontWeight: "700",
-          color: "#0f172a",
-          fontSize: 13,
-        }}
-      >
-        Expense Policy Guidelines
-      </Text>
-    </View>
+          <View
+            style={{
+              backgroundColor: "#ecfeff",
+              borderRadius: 12,
+              padding: 14,
+              marginBottom: 16,
+              borderWidth: 1,
+              borderColor: "#e0f2fe",
+            }}
+          >
+            {/* Title + View Zones on the right */}
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginBottom: 6,
+              }}
+            >
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Ionicons
+                  name="information-circle-outline"
+                  size={14}
+                  color="#06b6d4"
+                  style={{ marginRight: 6 }}
+                />
+                <Text
+                  style={{
+                    fontWeight: "700",
+                    color: "#0f172a",
+                    fontSize: 13,
+                  }}
+                >
+                  Expense Policy Guidelines
+                </Text>
+              </View>
 
-    <Pressable
-      onPress={() => setZonesVisible(true)}
-      style={{ flexDirection: "row", alignItems: "center" }}
-    >
-      <Text
-        style={{
-          fontSize: 11,
-          fontWeight: "600",
-          color: "#0ea5e9",
-          marginRight: 3,
-        }}
-      >
-        View Zones
-      </Text>
-      <Ionicons name="chevron-forward" size={12} color="#0ea5e9" />
-    </Pressable>
-  </View>
+              <Pressable
+                onPress={() => setZonesVisible(true)}
+                style={{ flexDirection: "row", alignItems: "center" }}
+              >
+                <Text
+                  style={{
+                    fontSize: 11,
+                    fontWeight: "600",
+                    color: "#0ea5e9",
+                    marginRight: 3,
+                  }}
+                >
+                  View Zones
+                </Text>
+                <Ionicons name="chevron-forward" size={12} color="#0ea5e9" />
+              </Pressable>
+            </View>
 
-  <Text
-    style={{
-      color: "#374151",
-      fontSize: 12,
-      lineHeight: 18,
-    }}
-  >
-    • TA auto-calculated based on geographical zone{"\n"}
-    • DA varies by station type: Local (₹450), Next Station (₹600),
-    Outstation (₹750){"\n"}
-    • Other expenses require prior approval for
-    outstation/next-station calls
-  </Text>
-</View>
-
+            <Text
+              style={{
+                color: "#374151",
+                fontSize: 12,
+                lineHeight: 18,
+              }}
+            >
+              • TA auto-calculated based on geographical zone{"\n"}
+              • DA varies by station type: Local (₹450), Next Station (₹600),
+              Outstation (₹750){"\n"}
+              • Other expenses require prior approval for
+              outstation/next-station calls
+            </Text>
+          </View>
 
           {/* Tabs */}
           <View
@@ -1665,164 +1752,177 @@ const [zonesVisible, setZonesVisible] = useState(false);
           </View>
 
           {/* Expense list */}
-       <View style={{ gap: 12, marginBottom: 16 }}>
-  {filteredExpenses.map((e) => (
-    <View
-      key={e.id}
-      style={{
-        backgroundColor: "#ffffff",
-        borderRadius: 12,
-        padding: 12,
-        borderWidth: 1,
-        borderColor: "#e5e7eb",
-      }}
-    >
-      {/* Top row: amount / type on left, status on right */}
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "flex-start",
-          marginBottom: 6,
-        }}
-      >
-        {/* Amount + type pill */}
-        <View>
-          <Text
-            style={{
-              fontWeight: "800",
-              fontSize: 16,
-              color: "#111827",
-            }}
-          >
-            ₹{e.amount}
-          </Text>
-          <View
-            style={{
-              marginTop: 4,
-              alignSelf: "flex-start",
-              paddingHorizontal: 8,
-              paddingVertical: 3,
-              borderRadius: 999,
-              borderWidth: 1,
-              borderColor: "#e5e7eb",
-              backgroundColor: "#f9fafb",
-            }}
-          >
-            <Text style={{ fontSize: 10, color: "#374151" }}>{e.type}</Text>
+          <View style={{ gap: 12, marginBottom: 16 }}>
+            {filteredExpenses.map((e) => (
+              <View
+                key={e.id}
+                style={{
+                  backgroundColor: "#ffffff",
+                  borderRadius: 12,
+                  padding: 12,
+                  borderWidth: 1,
+                  borderColor: "#e5e7eb",
+                }}
+              >
+                {/* Top row: amount / type on left, status on right */}
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "flex-start",
+                    marginBottom: 6,
+                  }}
+                >
+                  {/* Amount + type pill */}
+                  <View>
+                    <Text
+                      style={{
+                        fontWeight: "800",
+                        fontSize: 16,
+                        color: "#111827",
+                      }}
+                    >
+                      ₹{e.amount}
+                    </Text>
+                    <View
+                      style={{
+                        marginTop: 4,
+                        alignSelf: "flex-start",
+                        paddingHorizontal: 8,
+                        paddingVertical: 3,
+                        borderRadius: 999,
+                        borderWidth: 1,
+                        borderColor: "#e5e7eb",
+                        backgroundColor: "#f9fafb",
+                      }}
+                    >
+                      <Text style={{ fontSize: 10, color: "#374151" }}>
+                        {e.type}
+                      </Text>
+                    </View>
+                  </View>
+
+                  {/* Status pill */}
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      borderRadius: 999,
+                      paddingHorizontal: 10,
+                      paddingVertical: 5,
+                      backgroundColor:
+                        e.status === "Approved" ? "#22c55e" : "#e5e7eb",
+                    }}
+                  >
+                    <Ionicons
+                      name="checkmark-circle"
+                      size={12}
+                      color={
+                        e.status === "Approved" ? "#ffffff" : "#6b7280"
+                      }
+                      style={{ marginRight: 4 }}
+                    />
+                    <Text
+                      style={{
+                        fontSize: 11,
+                        fontWeight: "700",
+                        color:
+                          e.status === "Approved" ? "#ffffff" : "#374151",
+                      }}
+                    >
+                      {e.status}
+                    </Text>
+                  </View>
+                </View>
+
+                {/* Title */}
+                <Text
+                  style={{
+                    fontSize: 14,
+                    fontWeight: "700",
+                    color: "#111827",
+                  }}
+                >
+                  {e.title}
+                </Text>
+
+                {/* Date + location row with icons */}
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    marginTop: 4,
+                  }}
+                >
+                  <Ionicons
+                    name="calendar-outline"
+                    size={11}
+                    color="#6b7280"
+                    style={{ marginRight: 4 }}
+                  />
+                  <Text style={{ fontSize: 11, color: "#6b7280" }}>
+                    {e.date}
+                  </Text>
+
+                  <Text
+                    style={{
+                      fontSize: 11,
+                      color: "#6b7280",
+                      marginHorizontal: 6,
+                    }}
+                  >
+                    •
+                  </Text>
+
+                  <Ionicons
+                    name="location-outline"
+                    size={11}
+                    color="#6b7280"
+                    style={{ marginRight: 4 }}
+                  />
+                  <Text style={{ fontSize: 11, color: "#6b7280" }}>
+                    {e.location}
+                  </Text>
+                </View>
+
+                {/* Full-width View Details strip */}
+                <Pressable
+                  onPress={() => {
+                    setSelectedExpense(e);
+                    setDetailsVisible(true);
+                  }}
+                  style={{
+                    marginTop: 10,
+                    height: 30,
+                    borderRadius: 4,
+                    borderWidth: 1,
+                    borderColor: "#e5e7eb",
+                    backgroundColor: "#f9fafb",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    alignSelf: "stretch",
+                  }}
+                >
+                  <Ionicons
+                    name="eye-outline"
+                    size={12}
+                    color="#111827"
+                    style={{ marginRight: 6 }}
+                  />
+                  <Text
+                    style={{
+                      fontSize: 11,
+                      fontWeight: "600",
+                      color: "#111827",
+                    }}
+                  >
+                    View Details
+                  </Text>
+                </Pressable>
+              </View>
+            ))}
           </View>
-        </View>
-
-        {/* Status pill (green for Approved, grey for Pending) */}
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            borderRadius: 999,
-            paddingHorizontal: 10,
-            paddingVertical: 5,
-            backgroundColor:
-              e.status === "Approved" ? "#22c55e" : "#e5e7eb",
-          }}
-        >
-          <Ionicons
-            name="checkmark-circle"
-            size={12}
-            color={e.status === "Approved" ? "#ffffff" : "#6b7280"}
-            style={{ marginRight: 4 }}
-          />
-          <Text
-            style={{
-              fontSize: 11,
-              fontWeight: "700",
-              color: e.status === "Approved" ? "#ffffff" : "#374151",
-            }}
-          >
-            {e.status}
-          </Text>
-        </View>
-      </View>
-
-      {/* Title */}
-      <Text
-        style={{
-          fontSize: 14,
-          fontWeight: "700",
-          color: "#111827",
-        }}
-      >
-        {e.title}
-      </Text>
-
-      {/* Date + location row with icons */}
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          marginTop: 4,
-        }}
-      >
-        <Ionicons
-          name="calendar-outline"
-          size={11}
-          color="#6b7280"
-          style={{ marginRight: 4 }}
-        />
-        <Text style={{ fontSize: 11, color: "#6b7280" }}>{e.date}</Text>
-
-        <Text style={{ fontSize: 11, color: "#6b7280", marginHorizontal: 6 }}>
-          •
-        </Text>
-
-        <Ionicons
-          name="location-outline"
-          size={11}
-          color="#6b7280"
-          style={{ marginRight: 4 }}
-        />
-        <Text style={{ fontSize: 11, color: "#6b7280" }}>{e.location}</Text>
-      </View>
-
-      {/* Full-width View Details strip */}
-      <Pressable
-        onPress={() => {
-          setSelectedExpense(e);
-          setDetailsVisible(true);
-        }}
-        style={{
-          marginTop: 10,
-          height: 30,
-          borderRadius: 4,
-          borderWidth: 1,
-          borderColor: "#e5e7eb",
-          backgroundColor: "#f9fafb",
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "center",
-          alignSelf: "stretch",
-        }}
-      >
-        <Ionicons
-          name="eye-outline"
-          size={12}
-          color="#111827"
-          style={{ marginRight: 6 }}
-        />
-        <Text
-          style={{
-            fontSize: 11,
-            fontWeight: "600",
-            color: "#111827",
-          }}
-        >
-          View Details
-        </Text>
-      </Pressable>
-    </View>
-  ))}
-</View>
-
-
 
           {/* Stats card */}
           <View
@@ -1980,10 +2080,9 @@ const [zonesVisible, setZonesVisible] = useState(false);
         onClose={() => setDetailsVisible(false)}
       />
       <GeographicalZonesModal
-  visible={zonesVisible}
-  onClose={() => setZonesVisible(false)}
-/>
-
+        visible={zonesVisible}
+        onClose={() => setZonesVisible(false)}
+      />
     </SafeAreaView>
   );
 }

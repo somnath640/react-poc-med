@@ -4,13 +4,13 @@ import { LinearGradient } from "expo-linear-gradient";
 import React, { JSX, useState } from "react";
 import {
     Pressable,
-    SafeAreaView,
     ScrollView,
     StatusBar,
     Text,
     View,
     useWindowDimensions,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import SampleDetailsModal from "./modals/SampleDetailsModal";
 
 /* ---------- Types & mock data ---------- */

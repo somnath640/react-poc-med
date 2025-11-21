@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import {
   Dimensions,
   Modal,
-  SafeAreaView,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -12,9 +12,11 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import FilterRoutesDrawer from "@/components/FilterRoutesDrawer";
 import ModalHcpProfile from "@/components/ModalHcpProfile";
+import { router } from "expo-router";
 import COLORS from "../../constants/LupinColors";
 import { IconPlan, IconSparkles } from "../../constants/LupinIcons";
 import AddHCPModal from "../screens/hcp-tab-screen/AddHCPModal";
@@ -37,7 +39,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title, onBack, onAdd }) => {
       <View style={styles.headerLeft}>
         {onBack && (
           <TouchableOpacity onPress={onBack} style={styles.backBtn}>
-            <Ionicons name="chevron-back" size={20} color={COLORS.gray[800]} />
+            <Ionicons name="chevron-back" onPress={() =>  router.replace({ pathname: '/(tabs)', params: { openDrawer: '1' } } as any) } size={20} color={COLORS.gray[800]} />
           </TouchableOpacity>
         )}
         <Text style={styles.headerTitle}>{title}</Text>
@@ -338,18 +340,13 @@ const HcpsScreen: React.FC = () => {
 
         {/* Floating Lupin AI FAB */}
         <TouchableOpacity
-          style={styles.fab}
-          onPress={() => console.log("Lupin AI pressed")}
-        >
-          <LinearGradient
-            colors={["#9333EA", "#22C55E"]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.fabInner}
-          >
-            <Text style={styles.fabText}>L</Text>
-          </LinearGradient>
-        </TouchableOpacity>
+                style={styles.stickyL}
+                onPress={() => {
+                  router.push('/screens/ai-assistant')
+                }}
+              >
+                <Text style={styles.stickyLText}>L</Text>
+              </TouchableOpacity>
       </View>
 
       {/* Sidebar drawer for filters */}
@@ -373,6 +370,33 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.gray[100],
   },
+  stickyL: {
+      position: 'absolute',
+      right: 16,
+      bottom: 84,
+      width: 52,
+      height: 52,
+      borderRadius: 26,
+      backgroundColor: COLORS.ai?.purple500 ?? COLORS.blue[600],
+      alignItems: 'center',
+      justifyContent: 'center',
+      ...Platform.select({
+        ios: {
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 4 },
+          shadowOpacity: 0.18,
+          shadowRadius: 8,
+        },
+        android: {
+          elevation: 6,
+        },
+      }),
+    },
+    stickyLText: {
+      color: COLORS.utility.white,
+      fontWeight: '800',
+      fontSize: 18,
+    },
 
   header: {
     paddingTop: 8,
@@ -634,7 +658,7 @@ addText: {
   fab: {
     position: "absolute",
     right: 18,
-    bottom: 24,
+    bottom: 70,
   },
   fabInner: {
     width: 54,

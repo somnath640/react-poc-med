@@ -1,13 +1,13 @@
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import {
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import COLORS from "../../../constants/LupinColors";
 import {
   IconBox,

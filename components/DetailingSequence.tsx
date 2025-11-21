@@ -7,6 +7,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  useWindowDimensions,
   View,
 } from "react-native";
 import type { Product } from "../types/products";
@@ -92,28 +93,33 @@ const PRODUCTS: Product[] = [
         title: "Introduction - Starpress AM",
         description:
           "Starpress AM combines Metoprolol Succinate 50mg with Amlodipine 5mg for comprehensive cardiovascular protection through dual mechanisms.",
-          keyPoints: [
-            "Dual mechanism: β1-blockade + calcium channel blockade",
-"Superior BP control vs monotherapy",
-"Extended-release for 24-hour efficacy",
-"Reduces heart rate and vascular resistance"
-          ]},
-      { id: "s2", title: "Clinical Benefits", description: "Evidence-based combination therapy for optimal cardiovascular outcomes.",
-      keyPoints: [
-        "Greater BP reduction with combination therapy",
-"Complementary mechanisms minimize side effects",
-"Proven efficacy in angina and hypertension",
-"Reduced cardiovascular events",
-"Once-daily convenience improves compliance"
-      ]},
-      { id: "s3", title: "Dosing Guidelines", description: "Fixed-dose combination simplifies therapy and ensures optimal compliance.",
-     keyPoints: [
-        "Fixed combination: Metoprolol 50mg + Amlodipine 5mg",
-"Once-daily dosing",
-"Take with or immediately after meals",
-"Monitor heart rate and blood pressure regularly",
-"Suitable for patients requiring dual therapy"
-     ]},
+        keyPoints: [
+          "Dual mechanism: β1-blockade + calcium channel blockade",
+          "Superior BP control vs monotherapy",
+          "Extended-release for 24-hour efficacy",
+          "Reduces heart rate and vascular resistance"
+        ]
+      },
+      {
+        id: "s2", title: "Clinical Benefits", description: "Evidence-based combination therapy for optimal cardiovascular outcomes.",
+        keyPoints: [
+          "Greater BP reduction with combination therapy",
+          "Complementary mechanisms minimize side effects",
+          "Proven efficacy in angina and hypertension",
+          "Reduced cardiovascular events",
+          "Once-daily convenience improves compliance"
+        ]
+      },
+      {
+        id: "s3", title: "Dosing Guidelines", description: "Fixed-dose combination simplifies therapy and ensures optimal compliance.",
+        keyPoints: [
+          "Fixed combination: Metoprolol 50mg + Amlodipine 5mg",
+          "Once-daily dosing",
+          "Take with or immediately after meals",
+          "Monitor heart rate and blood pressure regularly",
+          "Suitable for patients requiring dual therapy"
+        ]
+      },
     ],
   },
   {
@@ -122,28 +128,34 @@ const PRODUCTS: Product[] = [
     tagline: "ACE Inhibitor",
     indication: "Hypertension, Heart Failure",
     slides: [
-      { id: "s1", title: "Introduction - Ramistar 10", description: "Ramistar 10 (Ramipril 10mg) is a long-acting ACE inhibitor with proven cardiovascular and renal protective effects beyond blood pressure lowering.",
-      keyPoints: [
-        "Potent ACE inhibition with tissue specificity",
-"Cardiovascular risk reduction proven in HOPE trial",
-"Renoprotective in diabetic nephropathy",
-"Once-daily dosing for improved adherence"
-      ] },
-      { id: "s2", title: "Landmark Trials", description: "Extensive clinical evidence supporting ramipril across cardiovascular indications.", 
-      keyPoints: [
-        "HOPE Trial: 22% reduction in CV death, MI, stroke",
-"AIRE Study: Reduced mortality post-MI",
-"ONTARGET: Non-inferior to telmisartan",
-"Beneficial in high-risk patients without HF"
-      ] },
-      { id: "s3", title: "Dosing & Monitoring", description: "Start low, go slow approach with appropriate monitoring ensures safety and efficacy.",
-      keyPoints: [
-        "Initial: 2.5mg once daily",
-"Maintenance: 5-10mg once daily",
-"Monitor serum creatinine and potassium",
-"Watch for dry cough (10% incidence)",
-"Contraindicated in pregnancy"
-      ] },
+      {
+        id: "s1", title: "Introduction - Ramistar 10", description: "Ramistar 10 (Ramipril 10mg) is a long-acting ACE inhibitor with proven cardiovascular and renal protective effects beyond blood pressure lowering.",
+        keyPoints: [
+          "Potent ACE inhibition with tissue specificity",
+          "Cardiovascular risk reduction proven in HOPE trial",
+          "Renoprotective in diabetic nephropathy",
+          "Once-daily dosing for improved adherence"
+        ]
+      },
+      {
+        id: "s2", title: "Landmark Trials", description: "Extensive clinical evidence supporting ramipril across cardiovascular indications.",
+        keyPoints: [
+          "HOPE Trial: 22% reduction in CV death, MI, stroke",
+          "AIRE Study: Reduced mortality post-MI",
+          "ONTARGET: Non-inferior to telmisartan",
+          "Beneficial in high-risk patients without HF"
+        ]
+      },
+      {
+        id: "s3", title: "Dosing & Monitoring", description: "Start low, go slow approach with appropriate monitoring ensures safety and efficacy.",
+        keyPoints: [
+          "Initial: 2.5mg once daily",
+          "Maintenance: 5-10mg once daily",
+          "Monitor serum creatinine and potassium",
+          "Watch for dry cough (10% incidence)",
+          "Contraindicated in pregnancy"
+        ]
+      },
     ],
   },
 ];
@@ -154,6 +166,10 @@ export default function DetailingSequence({
   onStartDetailing,
   completedMap = {},
 }: Props) {
+  const { width, height } = useWindowDimensions();
+  const isNarrow = width < 420;
+  const containerWidth = isNarrow ? Math.min(width - 24, width * 0.9) : Math.min(width * 0.48, 980);
+
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const toggleExpand = (id: string) => {
@@ -168,7 +184,8 @@ export default function DetailingSequence({
   const progressPercent = total > 0 ? (completedCount / total) * 100 : 0;
 
   return (
-    <View style={s.container}>
+    <View style={{...s.container, width: containerWidth,
+              maxHeight: Math.min(height - 100, 960),}}>
       {/* header */}
       <View style={s.header}>
         <View style={s.headerRow}>
@@ -319,8 +336,10 @@ export default function DetailingSequence({
   );
 }
 
+
+
 const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#f8fafc" },
+  container: { flex: 1, backgroundColor: "#f8fafc", },
   header: {
     paddingHorizontal: 14,
     paddingTop: 12,

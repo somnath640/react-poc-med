@@ -3,14 +3,15 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from 'expo-router';
 import React from 'react';
 import {
-    Image,
-    Platform,
-    SafeAreaView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Image,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 
 const LUPIN_GREEN_LEFT = '#01963f';
 const LUPIN_GREEN_RIGHT = '#008a37';
@@ -28,7 +29,7 @@ const LupinHeader: React.FC = () => {
       end={{ x: 1, y: 0 }}
       style={styles.container}
     >
-      <SafeAreaView style={styles.safeArea}>
+      <SafeAreaView edges={['top']} style={styles.safeArea}>
         <View style={styles.content}>
           {/* Left: logo + titles */}
           <View style={styles.left}>
@@ -65,7 +66,7 @@ const LupinHeader: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: Platform.OS === 'android' ? 24 : 0,
+    paddingTop: Platform.OS === 'android' ? 0 : 0,
   },
   safeArea: {
     width: '100%',
@@ -76,6 +77,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     alignItems: 'center',
     justifyContent: 'space-between',
+    boxShadow: '0px 10px 10px rgba(0, 0, 0, 0.1)',
   },
   left: {
     flexDirection: 'row',

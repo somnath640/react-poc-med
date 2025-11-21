@@ -3,13 +3,13 @@ import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import {
   Platform,
-  SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
 
+import { SafeAreaView } from 'react-native-safe-area-context';
 const BLUE = '#2563eb';
 const BLUE_50 = '#eef4ff';
 const GRAY_500 = '#6b7280';
@@ -21,7 +21,7 @@ const LupinBottomTabBar: React.FC<BottomTabBarProps> = ({
   navigation,
 }) => {
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['bottom']} shouldRasterizeIOS={true} style={styles.container}>
       <View style={styles.pill}>
           {state.routes.map((route, index) => {
             const { options } = descriptors[route.key];
@@ -107,8 +107,9 @@ const styles = StyleSheet.create({
     bottom: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'transparent',
-    paddingBottom: Platform.OS === 'android' ? 8 : 0,
+    backgroundColor: '#ffffff',
+    paddingBottom: Platform.OS === 'android' ? 0 : 0,
+
   },
   pill: {
     flexDirection: 'row',
@@ -120,15 +121,16 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOpacity: 0.08,
     shadowRadius: 10,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 4,
+    shadowOffset: { width: 0, height: 0 },
+    // elevation: 4,
+    boxShadow: '0px -4px 10px rgba(165, 165, 165, 0.1)',
   },
   itemWrapper: {
     flex: 1,
   },
   item: {
     flex: 1,
-    borderRadius: 20,
+    // borderRadius: 20,
     paddingVertical: 8,
     alignItems: 'center',
     justifyContent: 'center',

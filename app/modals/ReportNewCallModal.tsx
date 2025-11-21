@@ -5,12 +5,12 @@ import React, { useState } from "react";
 import {
     Modal,
     Pressable,
-    SafeAreaView,
     ScrollView,
     Text,
     TextInput,
     View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type Props = {
   visible: boolean;
