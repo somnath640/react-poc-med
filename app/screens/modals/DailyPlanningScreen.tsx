@@ -215,7 +215,7 @@ const DailyPlanningScreen: React.FC<any> = ({setWelcomeModal}) => {
 
             <TouchableOpacity style={styles.secondaryFooterButton}>
               <IconPlan size={20} color={COLORS.gray[700]} />
-              <Text style={styles.secondaryFooterText}>View Full Plan</Text>
+              <Text style={styles.secondaryFooterText} onPress={()=>{router.push('/screens/full-plan');setWelcomeModal(false)}}>View Full Plan</Text>
             </TouchableOpacity>
           </View>
         </View>

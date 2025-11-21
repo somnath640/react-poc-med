@@ -1,5 +1,6 @@
 // RouteDashboardScreen.tsx
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { router } from "expo-router";
 import React from "react";
 import {
   ScrollView,
@@ -36,7 +37,7 @@ const RouteDashboardScreen = () => {
         <View style={styles.header}>
           <View style={styles.headerLeft}>
             <TouchableOpacity style={styles.headerBack}>
-              <Ionicons name="chevron-back" size={20} color="#FFFFFF" />
+              <Ionicons name="chevron-back" onPress={() =>  router.replace({ pathname: '/(tabs)', params: { openDrawer: '1' } } as any) } size={20} color="#FFFFFF" />
             </TouchableOpacity>
             <View>
               <Text style={styles.headerTitle}>LUPIN CRM</Text>

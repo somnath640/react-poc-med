@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { Animated, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -48,7 +49,7 @@ const Index = () => {
         <View style={styles.header}>
 
           <View style={styles.headerLeft}>
-            <TouchableOpacity style={styles.backButton} onPress={() => (navigation.canGoBack() ? navigation.goBack() : null)}>
+            <TouchableOpacity style={styles.backButton} onPress={() =>  router.replace({ pathname: '/(tabs)', params: { openDrawer: '1' } } as any) }>
               <IconBackIOS />
             </TouchableOpacity>
 

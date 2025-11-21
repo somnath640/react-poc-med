@@ -1,10 +1,12 @@
 import { Ionicons } from "@expo/vector-icons";
-import React, { useMemo, useState } from "react";
+import { router } from "expo-router";
+import React, { JSX, useMemo, useState } from "react";
 import {
   Pressable,
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -34,27 +36,83 @@ type LeaveRequest = {
 };
 
 const LEAVE_REQUESTS: LeaveRequest[] = [
-  { id: "1", type: "Casual Leave", date: "Nov 10, 2025", days: "1 day", status: "Pending" },
-  { id: "2", type: "Sick Leave", date: "Nov 3–4, 2025", days: "2 days", status: "Approved" },
-  { id: "3", type: "Earned Leave", date: "Oct 21–23, 2025", days: "3 days", status: "Approved" },
-  { id: "4", type: "Compensatory Off", date: "Oct 5, 2025", days: "1 day", status: "Approved" },
+  {
+    id: "1",
+    type: "Casual Leave",
+    date: "Nov 10, 2025",
+    days: "1 day",
+    status: "Pending",
+  },
+  {
+    id: "2",
+    type: "Sick Leave",
+    date: "Nov 3–4, 2025",
+    days: "2 days",
+    status: "Approved",
+  },
+  {
+    id: "3",
+    type: "Earned Leave",
+    date: "Oct 21–23, 2025",
+    days: "3 days",
+    status: "Approved",
+  },
+  {
+    id: "4",
+    type: "Compensatory Off",
+    date: "Oct 5, 2025",
+    days: "1 day",
+    status: "Approved",
+  },
 ];
 
 export default function LeaveAttendence(): JSX.Element {
-  const [activeTab, setActiveTab] = useState<"Pending" | "Approved" | "All">("Pending");
+  const [activeTab, setActiveTab] = useState<"Pending" | "Approved" | "All">(
+    "Pending"
+  );
 
   const filteredRequests = useMemo(() => {
     if (activeTab === "All") return LEAVE_REQUESTS;
     return LEAVE_REQUESTS.filter((r) => r.status === activeTab);
   }, [activeTab]);
 
-  const pendingCount = LEAVE_REQUESTS.filter((r) => r.status === "Pending").length;
-  const approvedCount = LEAVE_REQUESTS.filter((r) => r.status === "Approved").length;
+  const pendingCount = LEAVE_REQUESTS.filter(
+    (r) => r.status === "Pending"
+  ).length;
+  const approvedCount = LEAVE_REQUESTS.filter(
+    (r) => r.status === "Approved"
+  ).length;
 
   return (
     <SafeAreaView style={styles.safe}>
+      {/* GREEN APP HEADER */}
+   <View style={styles.appHeader}>
+  {/* Back Button */}
+  <TouchableOpacity
+    onPress={() =>
+      router.replace({
+        pathname: "/(tabs)",
+        params: { openDrawer: "1" },
+      } as any)
+    }
+    style={{ marginRight: 10 }}
+  >
+    <Ionicons name="chevron-back" size={20} color="#ffffff" />
+  </TouchableOpacity>
+
+  {/* Title + Subtitle */}
+  <View style={{ flex: 1 }}>
+    <Text style={styles.appHeaderTitle}>LUPIN CRM</Text>
+    <Text style={styles.appHeaderSubtitle}>Field Force Management</Text>
+  </View>
+
+  {/* Right-side menu icon */}
+  <Ionicons name="menu" size={20} color="#ffffff" />
+</View>
+
+
       <View style={styles.container}>
-        {/* HEADER */}
+        {/* HEADER (screen title + button) */}
         <View style={styles.headerRow}>
           <Text style={styles.headerTitle}>Leave &amp; Attendance</Text>
 
@@ -78,7 +136,9 @@ export default function LeaveAttendence(): JSX.Element {
             <View style={styles.cardHeaderRow}>
               <View>
                 <Text style={styles.cardTitle}>Today&apos;s Attendance</Text>
-                <Text style={styles.cardSubtitle}>Friday, November 7, 2025</Text>
+                <Text style={styles.cardSubtitle}>
+                  Friday, November 7, 2025
+                </Text>
               </View>
 
               <View
@@ -91,7 +151,11 @@ export default function LeaveAttendence(): JSX.Element {
                   justifyContent: "center",
                 }}
               >
-                <Ionicons name="calendar-outline" size={18} color="#16a34a" />
+                <Ionicons
+                  name="calendar-outline"
+                  size={18}
+                  color="#16a34a"
+                />
               </View>
             </View>
 
@@ -182,7 +246,9 @@ export default function LeaveAttendence(): JSX.Element {
 
           {/* Monthly Stats */}
           <View style={styles.monthCard}>
-            <Text style={styles.monthTitle}>This Month - November 2025</Text>
+            <Text style={styles.monthTitle}>
+              This Month - November 2025
+            </Text>
 
             <View style={styles.monthGrid}>
               <MonthStatTile
@@ -231,7 +297,9 @@ function SegmentTab({
       onPress={onPress}
       style={[styles.segmentTab, active && styles.segmentTabActive]}
     >
-      <Text style={[styles.segmentLabel, active && styles.segmentLabelActive]}>
+      <Text
+        style={[styles.segmentLabel, active && styles.segmentLabelActive]}
+      >
         {label}
       </Text>
     </Pressable>
@@ -254,11 +322,15 @@ function LeaveRequestCard({ req }: { req: LeaveRequest }) {
           <View
             style={[
               styles.leaveStatusPill,
-              isPending ? styles.leaveStatusPending : styles.leaveStatusApproved,
+              isPending
+                ? styles.leaveStatusPending
+                : styles.leaveStatusApproved,
             ]}
           >
             <Ionicons
-              name={isPending ? "time-outline" : "checkmark-circle-outline"}
+              name={
+                isPending ? "time-outline" : "checkmark-circle-outline"
+              }
               size={13}
               color={isPending ? "#111827" : "#ffffff"}
               style={{ marginRight: 4 }}
@@ -301,7 +373,9 @@ function MonthStatTile({
   return (
     <View style={styles.monthTile}>
       <Text style={styles.monthTileTitle}>{title}</Text>
-      <Text style={[styles.monthTileValue, { color: valueColor }]}>{value}</Text>
+      <Text style={[styles.monthTileValue, { color: valueColor }]}>
+        {value}
+      </Text>
     </View>
   );
 }
@@ -313,6 +387,28 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#f3f4f6",
   },
+
+  /* NEW APP HEADER */
+ appHeader: {
+  backgroundColor: "#188838",
+  paddingHorizontal: 16,
+  paddingVertical: 8,
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "space-between",
+},
+appHeaderTitle: {
+  color: "#ffffff",
+  fontSize: 12,
+  fontWeight: "700",
+},
+appHeaderSubtitle: {
+  color: "#f0fff0",
+  fontSize: 9,
+  marginTop: 2,
+},
+
+
   container: {
     flex: 1,
   },
