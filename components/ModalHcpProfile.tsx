@@ -6,10 +6,9 @@ import {
   Pressable,
   SafeAreaView,
   ScrollView,
-  StatusBar,
   Text,
   View,
-  useWindowDimensions,
+  useWindowDimensions
 } from "react-native";
 import CallPlanning from "./CallPlanning";
 import DetailingPlayer from "./DetailingPlayer";
@@ -24,7 +23,7 @@ type Props = {
 export default function ModalHcpProfile({ visible, onClose }: Props) {
   const { width, height } = useWindowDimensions();
   const isNarrow = width < 420;
-  const containerWidth = isNarrow ? Math.min(width - 24, 360) : Math.min(width * 0.48, 980);
+  const containerWidth = isNarrow ? Math.min(width - 24, width*0.9) : Math.min(width * 0.48, 980);
 
   const [showCallPlan, setShowCallPlan] = useState(false);
   const [showDetailingList, setShowDetailingList] = useState(false);
@@ -194,7 +193,7 @@ export default function ModalHcpProfile({ visible, onClose }: Props) {
   return (
     <Modal animationType="slide" visible={visible} transparent onRequestClose={onClose}>
       <SafeAreaView style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.45)" }}>
-        <StatusBar barStyle="light-content" />
+        {/* <StatusBar barStyle="light-content" /> */}
         <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
           <Pressable
             style={{ position: "absolute", left: 0, right: 0, top: 0, bottom: 0 }}
@@ -204,7 +203,7 @@ export default function ModalHcpProfile({ visible, onClose }: Props) {
           <View
             style={{
               width: containerWidth,
-              maxHeight: Math.min(height - 48, 960),
+              maxHeight: Math.min(height - 100, 960),
               backgroundColor: "#fff",
               borderRadius: 12,
               overflow: "hidden",
