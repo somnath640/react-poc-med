@@ -3,14 +3,15 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from 'expo-router';
 import React from 'react';
 import {
-    Image,
-    Platform,
-    SafeAreaView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Image,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 
 const LUPIN_GREEN_LEFT = '#01963f';
 const LUPIN_GREEN_RIGHT = '#008a37';
