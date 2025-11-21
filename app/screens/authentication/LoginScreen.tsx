@@ -4,13 +4,11 @@ import PasswordField from '@/components/PasswordField';
 import { PrimaryButton } from '@/constants/LupinColors';
 import { router, useNavigation } from 'expo-router';
 import React, { useState } from 'react';
-import { Image, ScrollView, View } from 'react-native';
+import { Image, SafeAreaView, ScrollView, View } from 'react-native';
 import AppTitle from '../pagecomponents/AppTitle';
 import DemoBox from '../pagecomponents/DemoBox';
 import Footer from '../pagecomponents/Footer';
 // import Logo from '../pagecomponents/Logo';
-import { SafeAreaView } from 'react-native-safe-area-context';
-
 
 const LoginScreen: React.FC = () => {
     const [username, setUsername] = useState<string>('');
