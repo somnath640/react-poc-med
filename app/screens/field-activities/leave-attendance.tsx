@@ -1,3 +1,5 @@
+import LeaveDetailsModal, { LeaveDetail } from "@/components/LeaveDetailModal";
+import LeaveModal from "@/components/LeaveModal";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React, { JSX, useMemo, useState } from "react";
@@ -11,6 +13,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+/* ---------- Types ---------- */
 type LeaveType = {
   key: string;
   label: string;
@@ -67,61 +70,69 @@ const LEAVE_REQUESTS: LeaveRequest[] = [
 ];
 
 export default function LeaveAttendence(): JSX.Element {
-  const [activeTab, setActiveTab] = useState<"Pending" | "Approved" | "All">(
-    "Pending"
-  );
+  const [activeTab, setActiveTab] = useState<"Pending" | "Approved" | "All">("Pending");
 
+  const [leaveModal, setLeaveModal] = useState(false);
+  const [detailsModalVisible, setDetailsModalVisible] = useState(false);
+  const [selectedLeave, setSelectedLeave] = useState<LeaveDetail | null>(null);
+
+  /* ---------- Prepare Data ---------- */
   const filteredRequests = useMemo(() => {
     if (activeTab === "All") return LEAVE_REQUESTS;
     return LEAVE_REQUESTS.filter((r) => r.status === activeTab);
   }, [activeTab]);
 
-  const pendingCount = LEAVE_REQUESTS.filter(
-    (r) => r.status === "Pending"
-  ).length;
-  const approvedCount = LEAVE_REQUESTS.filter(
-    (r) => r.status === "Approved"
-  ).length;
+  const pendingCount = LEAVE_REQUESTS.filter((r) => r.status === "Pending").length;
+  const approvedCount = LEAVE_REQUESTS.filter((r) => r.status === "Approved").length;
+
+  /* ---------- Convert to LeaveDetail ---------- */
+  function openDetails(l: LeaveRequest) {
+    const detail: LeaveDetail = {
+      id: l.id,
+      type: l.type,
+      fromDate: l.date.includes("–") ? l.date.split("–")[0].trim() : l.date,
+      toDate: l.date.includes("–") ? l.date.split("–")[1].trim() : l.date,
+      totalDays: Number(l.days.replace(/\D/g, "")) || 1,
+      appliedOn: "Oct 27, 2025",
+      reason: "Medical emergency - Fever and body ache",
+      status: l.status,
+      approvedOn: l.status === "Approved" ? "Oct 27, 2025" : undefined,
+    };
+
+    setSelectedLeave(detail);
+    setDetailsModalVisible(true);
+  }
 
   return (
     <SafeAreaView style={styles.safe}>
       {/* GREEN APP HEADER */}
-   <View style={styles.appHeader}>
-  {/* Back Button */}
-  <TouchableOpacity
-    onPress={() =>
-      router.replace({
-        pathname: "/(tabs)",
-        params: { openDrawer: "1" },
-      } as any)
-    }
-    style={{ marginRight: 10 }}
-  >
-    <Ionicons name="chevron-back" size={20} color="#ffffff" />
-  </TouchableOpacity>
+      <View style={styles.appHeader}>
+        <TouchableOpacity
+          onPress={() =>
+            router.replace({
+              pathname: "/(tabs)",
+              params: { openDrawer: "1" },
+            } as any)
+          }
+          style={{ marginRight: 10 }}
+        >
+          <Ionicons name="chevron-back" size={20} color="#ffffff" />
+        </TouchableOpacity>
 
-  {/* Title + Subtitle */}
-  <View style={{ flex: 1 }}>
-    <Text style={styles.appHeaderTitle}>LUPIN CRM</Text>
-    <Text style={styles.appHeaderSubtitle}>Field Force Management</Text>
-  </View>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.appHeaderTitle}>LUPIN CRM</Text>
+          <Text style={styles.appHeaderSubtitle}>Field Force Management</Text>
+        </View>
 
-  {/* Right-side menu icon */}
-  <Ionicons name="menu" size={20} color="#ffffff" />
-</View>
-
+        <Ionicons name="menu" size={20} color="#ffffff" />
+      </View>
 
       <View style={styles.container}>
-        {/* HEADER (screen title + button) */}
+        {/* HEADER */}
         <View style={styles.headerRow}>
-          <Text style={styles.headerTitle}>Leave &amp; Attendance</Text>
+          <Text style={styles.headerTitle}>Leave & Attendance</Text>
 
-          <Pressable
-            style={styles.applyBtn}
-            onPress={() => {
-              // open apply-leave modal
-            }}
-          >
+          <Pressable style={styles.applyBtn} onPress={() => setLeaveModal(true)}>
             <Ionicons name="add" size={16} color="#ffffff" />
             <Text style={styles.applyBtnText}>Apply Leave</Text>
           </Pressable>
@@ -131,14 +142,12 @@ export default function LeaveAttendence(): JSX.Element {
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
         >
-          {/* Today's Attendance */}
+          {/* --- Today's Attendance Card --- */}
           <View style={styles.attendanceCard}>
             <View style={styles.cardHeaderRow}>
               <View>
                 <Text style={styles.cardTitle}>Today&apos;s Attendance</Text>
-                <Text style={styles.cardSubtitle}>
-                  Friday, November 7, 2025
-                </Text>
+                <Text style={styles.cardSubtitle}>Friday, November 7, 2025</Text>
               </View>
 
               <View
@@ -151,15 +160,10 @@ export default function LeaveAttendence(): JSX.Element {
                   justifyContent: "center",
                 }}
               >
-                <Ionicons
-                  name="calendar-outline"
-                  size={18}
-                  color="#16a34a"
-                />
+                <Ionicons name="calendar-outline" size={18} color="#16a34a" />
               </View>
             </View>
 
-            {/* check-in row */}
             <View style={styles.checkInRow}>
               <View style={{ flex: 3 }}>
                 <Text style={styles.checkInLabel}>Check-in</Text>
@@ -174,18 +178,12 @@ export default function LeaveAttendence(): JSX.Element {
               </View>
             </View>
 
-            {/* Check-out button row */}
-            <Pressable
-              style={styles.checkoutRow}
-              onPress={() => {
-                // handle check-out
-              }}
-            >
+            <Pressable style={styles.checkoutRow}>
               <Text style={styles.checkoutText}>Check Out</Text>
             </Pressable>
           </View>
 
-          {/* Leave Balance */}
+          {/* --- Leave Balance --- */}
           <View style={styles.balanceCard}>
             <Text style={styles.cardTitle}>Leave Balance</Text>
 
@@ -194,6 +192,7 @@ export default function LeaveAttendence(): JSX.Element {
               const total = leave.total;
               const remaining = total - used;
               const percentUsed = used / total;
+
               return (
                 <View key={leave.key} style={{ marginTop: 14 }}>
                   <View style={styles.balanceTopRow}>
@@ -205,22 +204,17 @@ export default function LeaveAttendence(): JSX.Element {
 
                   <View style={styles.progressTrack}>
                     <View
-                      style={[
-                        styles.progressFill,
-                        { width: `${percentUsed * 100}%` },
-                      ]}
+                      style={[styles.progressFill, { width: `${percentUsed * 100}%` }]}
                     />
                   </View>
 
-                  <Text style={styles.balanceUsedText}>
-                    {used} days used this year
-                  </Text>
+                  <Text style={styles.balanceUsedText}>{used} days used this year</Text>
                 </View>
               );
             })}
           </View>
 
-          {/* Tabs */}
+          {/* --- Tabs --- */}
           <View style={styles.segmentContainer}>
             <SegmentTab
               label={`Pending (${pendingCount})`}
@@ -239,49 +233,56 @@ export default function LeaveAttendence(): JSX.Element {
             />
           </View>
 
-          {/* Leave Request cards */}
+          {/* --- Leave Cards --- */}
           {filteredRequests.map((req) => (
-            <LeaveRequestCard key={req.id} req={req} />
+            <LeaveRequestCard key={req.id} req={req} onView={() => openDetails(req)} />
           ))}
 
-          {/* Monthly Stats */}
+          {/* --- Monthly Stats --- */}
           <View style={styles.monthCard}>
-            <Text style={styles.monthTitle}>
-              This Month - November 2025
-            </Text>
+            <Text style={styles.monthTitle}>This Month - November 2025</Text>
 
             <View style={styles.monthGrid}>
-              <MonthStatTile
-                title="Present Days"
-                value="18"
-                valueColor="#16a34a"
-              />
-              <MonthStatTile
-                title="Attendance Rate"
-                value="92%"
-                valueColor="#111827"
-              />
-              <MonthStatTile
-                title="On Time"
-                value="16"
-                valueColor="#16a34a"
-              />
-              <MonthStatTile
-                title="Late Check-ins"
-                value="2"
-                valueColor="#f97316"
-              />
+              <MonthStatTile title="Present Days" value="18" valueColor="#16a34a" />
+              <MonthStatTile title="Attendance Rate" value="92%" valueColor="#111827" />
+              <MonthStatTile title="On Time" value="16" valueColor="#16a34a" />
+              <MonthStatTile title="Late Check-ins" value="2" valueColor="#f97316" />
             </View>
           </View>
 
           <View style={{ height: 24 }} />
+
+          {/* --- APPLY LEAVE MODAL --- */}
+          <LeaveModal
+            visible={leaveModal}
+            onClose={() => setLeaveModal(false)}
+            onSubmit={(data) => {
+              console.log("Leave submitted:", data);
+              setLeaveModal(false);
+            }}
+          />
+
+          {/* --- DETAILS MODAL --- */}
+          <LeaveDetailsModal
+            visible={detailsModalVisible}
+            onClose={() => setDetailsModalVisible(false)}
+            leave={selectedLeave}
+            onCancel={(id) => {
+              console.log("Cancel leave:", id);
+              setDetailsModalVisible(false);
+            }}
+            onEdit={(leave) => {
+              console.log("Edit leave:", leave);
+              setDetailsModalVisible(false);
+            }}
+          />
         </ScrollView>
       </View>
     </SafeAreaView>
   );
 }
 
-/* ---------- Small building blocks ---------- */
+/* ---------- Components ---------- */
 
 function SegmentTab({
   label,
@@ -297,16 +298,20 @@ function SegmentTab({
       onPress={onPress}
       style={[styles.segmentTab, active && styles.segmentTabActive]}
     >
-      <Text
-        style={[styles.segmentLabel, active && styles.segmentLabelActive]}
-      >
+      <Text style={[styles.segmentLabel, active && styles.segmentLabelActive]}>
         {label}
       </Text>
     </Pressable>
   );
 }
 
-function LeaveRequestCard({ req }: { req: LeaveRequest }) {
+function LeaveRequestCard({
+  req,
+  onView,
+}: {
+  req: LeaveRequest;
+  onView: () => void;
+}) {
   const isPending = req.status === "Pending";
 
   return (
@@ -322,15 +327,11 @@ function LeaveRequestCard({ req }: { req: LeaveRequest }) {
           <View
             style={[
               styles.leaveStatusPill,
-              isPending
-                ? styles.leaveStatusPending
-                : styles.leaveStatusApproved,
+              isPending ? styles.leaveStatusPending : styles.leaveStatusApproved,
             ]}
           >
             <Ionicons
-              name={
-                isPending ? "time-outline" : "checkmark-circle-outline"
-              }
+              name={isPending ? "time-outline" : "checkmark-circle-outline"}
               size={13}
               color={isPending ? "#111827" : "#ffffff"}
               style={{ marginRight: 4 }}
@@ -347,13 +348,7 @@ function LeaveRequestCard({ req }: { req: LeaveRequest }) {
         </View>
       </View>
 
-      {/* View details row */}
-      <Pressable
-        style={styles.viewDetailsRow}
-        onPress={() => {
-          // open details
-        }}
-      >
+      <Pressable style={styles.viewDetailsRow} onPress={onView}>
         <Ionicons name="eye-outline" size={16} color="#6b7280" />
         <Text style={styles.viewDetailsText}>View Details</Text>
       </Pressable>
@@ -373,14 +368,12 @@ function MonthStatTile({
   return (
     <View style={styles.monthTile}>
       <Text style={styles.monthTileTitle}>{title}</Text>
-      <Text style={[styles.monthTileValue, { color: valueColor }]}>
-        {value}
-      </Text>
+      <Text style={[styles.monthTileValue, { color: valueColor }]}>{value}</Text>
     </View>
   );
 }
 
-/* ---------- styles ---------- */
+/* ---------- Styles ---------- */
 
 const styles = StyleSheet.create({
   safe: {
@@ -388,26 +381,24 @@ const styles = StyleSheet.create({
     backgroundColor: "#f3f4f6",
   },
 
-  /* NEW APP HEADER */
- appHeader: {
-  backgroundColor: "#188838",
-  paddingHorizontal: 16,
-  paddingVertical: 8,
-  flexDirection: "row",
-  alignItems: "center",
-  justifyContent: "space-between",
-},
-appHeaderTitle: {
-  color: "#ffffff",
-  fontSize: 12,
-  fontWeight: "700",
-},
-appHeaderSubtitle: {
-  color: "#f0fff0",
-  fontSize: 9,
-  marginTop: 2,
-},
-
+  appHeader: {
+    backgroundColor: "#188838",
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  appHeaderTitle: {
+    color: "#ffffff",
+    fontSize: 12,
+    fontWeight: "700",
+  },
+  appHeaderSubtitle: {
+    color: "#f0fff0",
+    fontSize: 9,
+    marginTop: 2,
+  },
 
   container: {
     flex: 1,
@@ -416,6 +407,7 @@ appHeaderSubtitle: {
     paddingHorizontal: 12,
     paddingBottom: 24,
   },
+
   headerRow: {
     paddingHorizontal: 16,
     paddingTop: 8,
@@ -424,11 +416,13 @@ appHeaderSubtitle: {
     alignItems: "center",
     justifyContent: "space-between",
   },
+
   headerTitle: {
     fontSize: 22,
     fontWeight: "700",
     color: "#111827",
   },
+
   applyBtn: {
     flexDirection: "row",
     alignItems: "center",
@@ -489,6 +483,7 @@ appHeaderSubtitle: {
     color: "#16a34a",
     marginTop: 4,
   },
+
   statusPill: {
     marginTop: 6,
     paddingHorizontal: 10,
@@ -501,6 +496,7 @@ appHeaderSubtitle: {
     fontWeight: "700",
     color: "#ffffff",
   },
+
   checkoutRow: {
     marginTop: 6,
     borderRadius: 6,
@@ -525,11 +521,13 @@ appHeaderSubtitle: {
     paddingVertical: 12,
     marginBottom: 10,
   },
+
   balanceTopRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
+
   balanceLabel: {
     fontSize: 13,
     fontWeight: "700",
@@ -539,6 +537,7 @@ appHeaderSubtitle: {
     fontSize: 11,
     color: "#6b7280",
   },
+
   progressTrack: {
     height: 6,
     borderRadius: 999,
@@ -615,6 +614,7 @@ appHeaderSubtitle: {
     marginTop: 2,
     marginBottom: 8,
   },
+
   leaveStatusPill: {
     flexDirection: "row",
     alignItems: "center",
@@ -631,11 +631,13 @@ appHeaderSubtitle: {
     backgroundColor: "#16a34a",
     borderColor: "#16a34a",
   },
+
   leaveStatusText: {
     fontSize: 11,
     fontWeight: "700",
     color: "#ffffff",
   },
+
   viewDetailsRow: {
     borderTopWidth: 1,
     borderTopColor: "#e5e7eb",
@@ -667,11 +669,13 @@ appHeaderSubtitle: {
     color: "#111827",
     marginBottom: 10,
   },
+
   monthGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
     gap: 10,
   },
+
   monthTile: {
     flexBasis: "48%",
     backgroundColor: "#ffffff",

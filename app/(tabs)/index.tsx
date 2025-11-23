@@ -2,6 +2,8 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { router, useNavigation } from 'expo-router';
 import React, { useState } from 'react';
+import ModalHcpProfile from "../../components/ModalHcpProfile";
+
 import {
   Modal,
   Platform,
@@ -37,6 +39,9 @@ const HomeScreen = () => {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [welcomeModal, setWelcomeModal] = useState(true);
+  const [hcpModalVisible, setHcpModalVisible] = useState(false);
+
+
 
   return (
     <View style={styles.screen}>
@@ -243,7 +248,7 @@ const HomeScreen = () => {
                 <Text style={styles.badgeText}>4</Text>
               </View>
             </View>
-            <TouchableOpacity>
+            <TouchableOpacity >
               <Text
                 style={styles.viewDetails}
                 onPress={() => router.push('/hcps')}
@@ -294,6 +299,7 @@ const HomeScreen = () => {
                   styles.followUpRow,
                   { backgroundColor: f.tint, borderColor: '#F3D4D8' },
                 ]}
+                onPress={() => setHcpModalVisible(true)}
               >
                 <View style={styles.followUpContent}>
                   <View style={styles.followUpText}>
@@ -331,7 +337,7 @@ const HomeScreen = () => {
               <Text
                 style={styles.viewDetails}
                 onPress={() =>
-                  router.push('/screens/field-activities/sample-tracking')
+                  router.push('/screens/field-activities/sampleTracking')
                 }
               >
                 View All
@@ -345,6 +351,7 @@ const HomeScreen = () => {
                 styles.productUpdateRow,
                 { backgroundColor: '#ECFDF5' },
               ]}
+              onPress={() => router.push('/screens/field-activities/sampleTracking')}
             >
               <View style={styles.productLeft}>
                 <View
@@ -355,7 +362,7 @@ const HomeScreen = () => {
                 >
                   <IconBox size={18} color={COLORS.utility.white} />
                 </View>
-                <View style={{ marginLeft: 12 }}>
+                <View  style={{ marginLeft: 12 }}>
                   <Text style={styles.productTitle}>
                     New Launch: CardioPlus XR{' '}
                     <Text style={styles.productPill}>New Product</Text>
@@ -374,6 +381,7 @@ const HomeScreen = () => {
                 styles.productUpdateRow,
                 { backgroundColor: '#FEF2F2' },
               ]}
+              onPress={() => router.push('/screens/field-activities/sampleTracking')}
             >
               <View style={styles.productLeft}>
                 <View
@@ -403,6 +411,7 @@ const HomeScreen = () => {
                 styles.productUpdateRow,
                 { backgroundColor: '#EFF6FF' },
               ]}
+              onPress={() => router.push('/screens/field-activities/sampleTracking')}
             >
               <View style={styles.productLeft}>
                 <View
@@ -431,7 +440,7 @@ const HomeScreen = () => {
 
         {/* Quick Actions */}
         <View style={styles.quickGrid}>
-          <TouchableOpacity style={styles.quickActionItem}>
+          <TouchableOpacity style={styles.quickActionItem} onPress={() => router.push('/calls')}>
             <View
               style={[
                 styles.quickActionIconCircle,
@@ -442,7 +451,7 @@ const HomeScreen = () => {
             </View>
             <Text style={styles.quickActionLabel}>Start Call</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.quickActionItem}>
+          <TouchableOpacity style={styles.quickActionItem} onPress={() => router.push('/screens/field-activities/expense-management')}>
             <View
               style={[
                 styles.quickActionIconCircle,
@@ -453,7 +462,7 @@ const HomeScreen = () => {
             </View>
             <Text style={styles.quickActionLabel}>Add Expense</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.quickActionItem}>
+          <TouchableOpacity style={styles.quickActionItem} onPress={() => router.push('/screens/field-activities/sampleTracking')}>
             <View
               style={[
                 styles.quickActionIconCircle,
@@ -464,7 +473,7 @@ const HomeScreen = () => {
             </View>
             <Text style={styles.quickActionLabel}>Track Sample</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.quickActionItem}>
+          <TouchableOpacity style={styles.quickActionItem} onPress={() => router.push('/calls')}>
             <View
               style={[
                 styles.quickActionIconCircle,
@@ -504,6 +513,12 @@ const HomeScreen = () => {
       >
         <Text style={styles.stickyLText}>L</Text>
       </TouchableOpacity>
+      <ModalHcpProfile
+  visible={hcpModalVisible}
+  onClose={() => setHcpModalVisible(false)}
+/>
+
+
     </View>
   );
 };

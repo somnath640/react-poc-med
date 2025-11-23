@@ -199,16 +199,17 @@ export default function DetailingPlayer({
   ) : (
     // call both onComplete and onFinish (parent can decide)
     <Pressable
-      onPress={() => {
-        // notify parent that product is complete
-        onComplete?.();
-        // then notify parent that the whole session/finish button was pressed
-        if (typeof onFinish === "function") onFinish();
-      }}
-      style={({ pressed }) => [styles.nextBtn, pressed && { opacity: 0.95 }]}
-    >
-      <Text style={styles.nextText}>Finish</Text>
-    </Pressable>
+  onPress={() => {
+    // notify parent that product is complete
+    onComplete?.();
+    // then notify parent that the whole session/finish button was pressed
+    if (typeof onFinish === "function") onFinish();
+  }}
+  style={({ pressed }) => [styles.nextBtn, pressed && { opacity: 0.95 }]}
+>
+  <Text style={styles.nextText}>Finish</Text>
+</Pressable>
+
   )
 ) : (
   <Pressable

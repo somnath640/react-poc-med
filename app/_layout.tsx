@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
-import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
-import { router, Slot } from "expo-router";
+import { DrawerItem } from "@react-navigation/drawer";
+import { Slot, router } from "expo-router";
 import { Drawer } from "expo-router/drawer";
 import React from "react";
 import {
@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   View
 } from "react-native";
+import { ScrollView as GHScrollView } from "react-native-gesture-handler";
 
 // Helper: right arrow icon
 function RightArrow() {
@@ -33,12 +34,14 @@ function CustomDrawerContent(props: any) {
   const { navigation } = props;
 
   return (
-    <DrawerContentScrollView
-      {...props}
-      contentContainerStyle={styles.drawerScrollContent}
-      pagingEnabled={false}
-      style={{}}
-    >
+    <View
+  style={{
+    flex: 1,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
+  }}
+>
+
       {/* Brand header (green) */}
       <View style={styles.brandHeader}>
         <View style={styles.brandLeft}>
@@ -87,6 +90,13 @@ function CustomDrawerContent(props: any) {
           </View>
         </View>
       </View>
+      <GHScrollView
+    style={{ flex: 1 }}
+    contentContainerStyle={{
+      paddingHorizontal: 0,
+      paddingVertical: 12,
+    }}
+  >
 
       {/* AI Field Assistant */}
       <Text style={styles.sectionTitle}>AI FIELD ASSISTANT</Text>
@@ -154,60 +164,58 @@ function CustomDrawerContent(props: any) {
         onPress={() => {}}
       />
 
-      <DrawerItem
-        style={styles.drawerItem}
-        icon={() => (
-          <View style={styles.itemIconCircle}>
-            <Ionicons name="cube-outline" size={16} color="#4b5563" />
-          </View>
-        )}
-        label={() => (
-          <LabelWrapper>
-            <View style={styles.itemLeft}>
-              <Text style={styles.itemText} onPress={()=>router.push('/screens/sampleTracking')}>Sample Tracking</Text>
-              <View style={styles.badge}>
-                <Text style={styles.badgeText}>3</Text>
-              </View>
-            </View>
-          </LabelWrapper>
-        )}
-        onPress={() => {}}
-      />
+<DrawerItem
+  style={styles.drawerItem}
+  icon={() => (
+    <View style={styles.itemIconCircle}>
+      <Ionicons name="time-outline" size={16} color="#4b5563" />
+    </View>
+  )}
+  label={() => (
+    <LabelWrapper>
+      <Text style={styles.itemText}>Sample Tracking</Text>
+    </LabelWrapper>
+  )}
+  onPress={() => router.push('/screens/field-activities/sampleTracking')}
+/>
 
-      <DrawerItem
-        style={styles.drawerItem}
-        icon={() => (
-          <View style={styles.itemIconCircle}>
-            <Ionicons name="medkit-outline" size={16} color="#4b5563" />
-          </View>
-        )}
-        label={() => (
-          <LabelWrapper>
-            <Text style={styles.itemText}>Chemist Visit</Text>
-          </LabelWrapper>
-        )}
-        onPress={() => {}}
-      />
 
-      <DrawerItem
-        style={styles.drawerItem}
-        icon={() => (
-          <View style={styles.itemIconCircle}>
-            <Ionicons name="briefcase-outline" size={16} color="#4b5563" />
-          </View>
-        )}
-        label={() => (
-          <LabelWrapper>
-            <View style={styles.itemLeft}>
-              <Text style={styles.itemText}>Stockist Visit</Text>
-              <View style={styles.badge}>
-                <Text style={styles.badgeText}>2</Text>
-              </View>
-            </View>
-          </LabelWrapper>
-        )}
-        onPress={() => {}}
-      />
+<DrawerItem
+  style={styles.drawerItem}
+  icon={() => (
+    <View style={styles.itemIconCircle}>
+      <Ionicons name="medkit-outline" size={16} color="#4b5563" />
+    </View>
+  )}
+  label={() => (
+    <LabelWrapper>
+      <Text style={styles.itemText}>Chemist Visit</Text>
+    </LabelWrapper>
+  )}
+  onPress={() => router.push('/screens/field-activities/chemist-visit')}
+/>
+
+
+<DrawerItem
+  style={styles.drawerItem}
+  icon={() => (
+    <View style={styles.itemIconCircle}>
+      <Ionicons name="briefcase-outline" size={16} color="#4b5563" />
+    </View>
+  )}
+  label={() => (
+    <LabelWrapper>
+      <View style={styles.itemLeft}>
+        <Text style={styles.itemText}>Stockist Visit</Text>
+        <View style={styles.badge}>
+          <Text style={styles.badgeText}>2</Text>
+        </View>
+      </View>
+    </LabelWrapper>
+  )}
+  onPress={() => router.push('/screens/field-activities/stokist-visit')}
+/>
+
 
       {/* ENGAGEMENT & MARKETING */}
       <Text style={styles.sectionTitle}>ENGAGEMENT & MARKETING</Text>
@@ -425,7 +433,7 @@ function CustomDrawerContent(props: any) {
         )}
         onPress={() => {}}
       />
-
+</GHScrollView>
       {/* Logout - pinned visually at bottom of content */}
       <TouchableOpacity
         style={styles.logoutBtn}
@@ -441,7 +449,7 @@ function CustomDrawerContent(props: any) {
         />
         <Text style={styles.logoutText} onPress={()=>router.push('/screens/authentication/LoginScreen')}>Logout</Text>
       </TouchableOpacity>
-    </DrawerContentScrollView>
+    </View>
   );
 }
 

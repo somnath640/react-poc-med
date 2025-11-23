@@ -13,6 +13,7 @@ import {
 import CallPlanning from "./CallPlanning";
 import DetailingPlayer from "./DetailingPlayer";
 import DetailingSequence from "./DetailingSequence";
+import ReportNewCallModal from "./ReportNewCallModal";
 import SuccessPanel from "./SuccessPanel";
 
 type Props = {
@@ -34,6 +35,34 @@ export default function ModalHcpProfile({ visible, onClose }: Props) {
   const [openPlayerFor, setOpenPlayerFor] = useState<any | null>(null);
   const [showSuccess, setShowSuccess] = useState(false);
   const [completedMap, setCompletedMap] = useState<Record<string, boolean>>({});
+  const [hasCompletedDetailingBefore, setHasCompletedDetailingBefore] = useState(false);
+const [showReportModal, setShowReportModal] = useState(false);
+const [slidesCompleted, setSlidesCompleted] = useState(false);
+const [hasShownReportOnce, setHasShownReportOnce] = useState(false);
+const [isFreshSession, setIsFreshSession] = useState(true);
+
+
+useEffect(() => {
+  if (visible) {
+    setShowCallPlan(false);
+    setShowDetailingList(false);
+    setPlayQueue([]);
+    setPlayIndex(null);
+    setOpenPlayerFor(null);
+    setShowSuccess(false);
+    setCompletedMap({});
+
+    // 🔥 FIX: Reset slide states when modal opens
+    setSlidesCompleted(false);
+    setHasShownReportOnce(false);
+    setIsFreshSession(true);
+  }
+}, [visible]);
+
+
+
+
+
 
   // Reset modal state whenever the modal is opened so it always starts from the beginning.
   useEffect(() => {
@@ -78,6 +107,9 @@ export default function ModalHcpProfile({ visible, onClose }: Props) {
   // When DetailingSequence asks to start detailing a product,
   // parent receives (product, allProducts, index) — create a play queue and start at index.
   function handleStartDetailing(productFromList?: Partial<any>, products?: any[], index?: number) {
+    setSlidesCompleted(false);
+setHasShownReportOnce(false);
+
     // For the "Tonact EZ 40" demo we will use the four uploaded slide images you provided.
     const demoImages = [
       require("../assets/images/tonact.png"),
@@ -248,7 +280,19 @@ export default function ModalHcpProfile({ visible, onClose }: Props) {
                     {hcp.tier}
                   </Text>
                 </View>
-                <Pressable onPress={onClose} style={{ padding: 8 }}>
+                <Pressable   
+                onPress={() => {
+    // RESET EVERYTHING related to detailing
+    setSlidesCompleted(false);
+    setHasShownReportOnce(false);
+    setIsFreshSession(true);
+
+    // 🔥 THIS WAS MISSING
+    setHasCompletedDetailingBefore(false);
+
+    onClose();
+  }}
+   style={{ padding: 8 }}>
                   <Ionicons name="close" size={20} color="#6b7280" />
                 </Pressable>
               </View>
@@ -274,6 +318,9 @@ export default function ModalHcpProfile({ visible, onClose }: Props) {
                   setPlayQueue([]);
                   // ensure the detailing list is visible so the success UI sits in same modal body
                   setShowDetailingList(true);
+                  setSlidesCompleted(true);
+setHasShownReportOnce(false); // allow showing report modal ONE TIME
+
                 }}
                 inline={true}
               />
@@ -288,9 +335,10 @@ export default function ModalHcpProfile({ visible, onClose }: Props) {
             ) : showDetailingList ? (
               showSuccess ? (
                 <SuccessPanel
-                  onSubmit={() => {
-                    onClose();
-                  }}
+                onSubmit={() => {
+                  setHasCompletedDetailingBefore(true);  // remember first completion
+                  onClose();
+                }}
                 />
               ) : (
                 <DetailingSequence
@@ -306,11 +354,27 @@ export default function ModalHcpProfile({ visible, onClose }: Props) {
               <MainProfileContent
                 hcp={hcp}
                 onStartCall={() => {
-                  setShowCallPlan(true);
+                  if (hasCompletedDetailingBefore) {
+                    setShowReportModal(true);      // open new modal next time
+                  } else {
+                    setShowCallPlan(true);         // normal first-time behavior
+                  }
                 }}
+                
               />
             )}
           </View>
+          {showReportModal && (
+  <ReportNewCallModal
+    visible={showReportModal}
+    onClose={() => {
+      setShowReportModal(false);
+      setHasShownReportOnce(true);
+      setShowCallPlan(true);   // after closing, continue flow
+    }}
+  />
+)}
+
         </View>
       </SafeAreaView>
     </Modal>
