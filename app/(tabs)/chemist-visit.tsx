@@ -8,19 +8,20 @@
 // ✔ Single file as requested
 
 import VisitModal from "@/components/VisitModal";
-import { Feather, FontAwesome6, Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { router } from "expo-router";
+import COLORS from "@/constants/LupinColors";
+import { Feather, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
+import { Stack } from "expo-router";
 import React, { JSX, useState } from "react";
+
 import {
-    Pressable,
-    SafeAreaView,
-    ScrollView,
-    StatusBar,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
-    useWindowDimensions,
+  Pressable,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  Text,
+  TextInput,
+  View,
+  useWindowDimensions
 } from "react-native";
 
 /* ---------- Types ---------- */
@@ -785,85 +786,16 @@ export default function ChemistVisit(): JSX.Element {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#f8fafc" }}>
       <StatusBar barStyle="dark-content" backgroundColor="#f8fafc" />
-      <View
-        style={{
-          backgroundColor: COLORS.brand.lupinGreen,
-          paddingHorizontal: 16,
-          paddingVertical: 13,
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        {/* Logo + App Name */}
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <View
-            style={{
-              width: 30,
-              height: 30,
-              borderRadius: 15,
-              backgroundColor: "#ffffff",
-              alignItems: "center",
-              justifyContent: "center",
-              marginRight: 8,
-            }}
-          >
-            <TouchableOpacity>
-                          <Ionicons name="chevron-back" size={20} onPress={() =>  router.replace({ pathname: '/(tabs)', params: { openDrawer: '1' } } as any) }/>
-                        </TouchableOpacity>
-          </View>
+      <Stack.Screen
+  options={{
+    title: "Chemist Visit",
+    headerStyle: { backgroundColor: COLORS.brand.lupinGreen },
+    headerTintColor: "#fff",
+    headerTitleStyle: { fontWeight: "bold" },
+  }}
+/>
 
-          <View>
-            <Text
-              style={{
-                color: "#ffffff",
-                fontSize: 15,
-                fontWeight: "700",
-              }}
-            >
-              LUPIN CRM
-            </Text>
-            <Text style={{ color: "#d9ffd7", fontSize: 11 }}>
-              Field Force Management
-            </Text>
-          </View>
-        </View>
-
-        {/* 3-dot menu */}
-        <View
-          style={{
-            alignItems: "flex-end",
-            justifyContent: "space-between",
-            height: 16,
-          }}
-        >
-          <View
-            style={{
-              width: 3,
-              height: 3,
-              borderRadius: 2,
-              backgroundColor: "#ffffff",
-            }}
-          />
-          <View
-            style={{
-              width: 3,
-              height: 3,
-              borderRadius: 2,
-              backgroundColor: "#ffffff",
-            }}
-          />
-          <View
-            style={{
-              width: 3,
-              height: 3,
-              borderRadius: 2,
-              backgroundColor: "#ffffff",
-            }}
-          />
-        </View>
-      </View>
-      <ScrollView contentContainerStyle={{ paddingVertical: 16 }}>
+      <ScrollView contentContainerStyle={{ paddingVertical: 16, paddingBottom: 130, }}>
         <View style={{ width: container, alignSelf: "center", paddingHorizontal: 8 }}>
           {/* Header */}
           <View

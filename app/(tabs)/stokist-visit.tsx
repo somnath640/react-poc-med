@@ -1,19 +1,17 @@
 // App.tsx
 
 import StockistVisitModal from "@/components/StockistVisitModal";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { router } from "expo-router";
+import { MaterialIcons } from "@expo/vector-icons";
 import React, { JSX, useState } from "react";
 import {
-    Pressable,
-    SafeAreaView,
-    ScrollView,
-    StatusBar,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
-    useWindowDimensions,
+  Pressable,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  Text,
+  TextInput,
+  View,
+  useWindowDimensions
 } from "react-native";
 
 /* ---------------- Types & sample data ---------------- */
@@ -133,85 +131,7 @@ export default function StokistVisit(): JSX.Element {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#f8fafc" }}>
       <StatusBar barStyle="dark-content" backgroundColor="#f8fafc" />
-      <View
-        style={{
-          backgroundColor: COLORS.brand.lupinGreen,
-          paddingHorizontal: 16,
-          paddingVertical: 13,
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        {/* Logo + App Name */}
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <View
-            style={{
-              width: 30,
-              height: 30,
-              borderRadius: 15,
-              backgroundColor: "#ffffff",
-              alignItems: "center",
-              justifyContent: "center",
-              marginRight: 8,
-            }}
-          >
-            <TouchableOpacity>
-                          <Ionicons name="chevron-back" size={20} onPress={() =>  router.replace({ pathname: '/(tabs)', params: { openDrawer: '1' } } as any) }/>
-                        </TouchableOpacity>
-          </View>
-
-          <View>
-            <Text
-              style={{
-                color: "#ffffff",
-                fontSize: 15,
-                fontWeight: "700",
-              }}
-            >
-              LUPIN CRM
-            </Text>
-            <Text style={{ color: "#d9ffd7", fontSize: 11 }}>
-              Field Force Management
-            </Text>
-          </View>
-        </View>
-
-        {/* 3-dot menu */}
-        <View
-          style={{
-            alignItems: "flex-end",
-            justifyContent: "space-between",
-            height: 16,
-          }}
-        >
-          <View
-            style={{
-              width: 3,
-              height: 3,
-              borderRadius: 2,
-              backgroundColor: "#ffffff",
-            }}
-          />
-          <View
-            style={{
-              width: 3,
-              height: 3,
-              borderRadius: 2,
-              backgroundColor: "#ffffff",
-            }}
-          />
-          <View
-            style={{
-              width: 3,
-              height: 3,
-              borderRadius: 2,
-              backgroundColor: "#ffffff",
-            }}
-          />
-        </View>
-      </View>
-      <ScrollView contentContainerStyle={{ paddingVertical: 16 }}>
+      <ScrollView contentContainerStyle={{ paddingVertical: 16, paddingBottom: 100,  }}>
         <View style={{ width: container, alignSelf: "center", paddingHorizontal: 8 }}>
           {/* Header */}
           <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>

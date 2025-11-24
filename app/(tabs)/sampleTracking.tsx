@@ -2,8 +2,7 @@ import RequestSamplesModal from "@/components/RequestSamplesModal";
 import RestockModal from "@/components/RestockModal";
 import StockDetailsModal from "@/components/StockDetailsModal";
 import COLORS from "@/constants/LupinColors";
-import { Ionicons } from "@expo/vector-icons";
-import { router } from "expo-router";
+import { Stack } from "expo-router";
 import React, { useState } from "react";
 import {
   Image,
@@ -12,7 +11,6 @@ import {
   ScrollView,
   StatusBar,
   Text,
-  TouchableOpacity,
   View,
   useWindowDimensions
 } from "react-native";
@@ -165,100 +163,25 @@ export default function SampleTracking({ visible, onClose, onSubmit }: Props) {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#f8fafc" }}>
       <StatusBar barStyle="dark-content" backgroundColor="#f8fafc" />
-      <View
-        style={{
-          backgroundColor: COLORS.brand.lupinGreen,
-          paddingHorizontal: 16,
-          paddingVertical: 13,
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        {/* Logo + App Name */}
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <View
-            style={{
-              width: 30,
-              height: 30,
-              borderRadius: 15,
-              backgroundColor: "#ffffff",
-              alignItems: "center",
-              justifyContent: "center",
-              marginRight: 8,
-            }}
-          >
-            <TouchableOpacity>
-                          <Ionicons name="chevron-back" size={20} onPress={() =>  router.replace({ pathname: '/(tabs)', params: { openDrawer: '1' } } as any) }/>
-                        </TouchableOpacity>
-          </View>
-
-          <View>
-            <Text
-              style={{
-                color: "#ffffff",
-                fontSize: 15,
-                fontWeight: "700",
-              }}
-            >
-              LUPIN CRM
-            </Text>
-            <Text style={{ color: "#d9ffd7", fontSize: 11 }}>
-              Field Force Management
-            </Text>
-          </View>
-        </View>
-
-        {/* 3-dot menu */}
-        <View
-          style={{
-            alignItems: "flex-end",
-            justifyContent: "space-between",
-            height: 16,
-          }}
-        >
-          <View
-            style={{
-              width: 3,
-              height: 3,
-              borderRadius: 2,
-              backgroundColor: "#ffffff",
-            }}
-          />
-          <View
-            style={{
-              width: 3,
-              height: 3,
-              borderRadius: 2,
-              backgroundColor: "#ffffff",
-            }}
-          />
-          <View
-            style={{
-              width: 3,
-              height: 3,
-              borderRadius: 2,
-              backgroundColor: "#ffffff",
-            }}
-          />
-        </View>
-      </View>
-      <ScrollView contentContainerStyle={{ paddingVertical: 18 }}>
+      <Stack.Screen
+  options={{
+    title: "Chemist Visit",
+    headerStyle: { backgroundColor: COLORS.brand.lupinGreen },
+    headerTintColor: "#fff",
+    headerTitleStyle: { fontWeight: "bold" },
+  }}
+/>
+      <ScrollView contentContainerStyle={{ paddingVertical: 18, paddingBottom: 80,  }}>
         <View style={{ width: container, alignSelf: "center", paddingHorizontal: 8 }}>
           
           {/* Header */}
-          <View
-          style={{
-            paddingHorizontal: 24,
-            paddingVertical: 20,
-            borderBottomWidth: 1,
-            borderBottomColor: "#f1f5f9",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-        </View>
+
+        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+            <Text style={{ fontSize: 22, fontWeight: "700", color: "#0f172a" }}>Sample Tracking</Text>
+            <Pressable onPress={() => setRestockVisible(true)} style={{ backgroundColor: "#0f172a", paddingHorizontal: 12, paddingVertical: 8, borderRadius: 8 }}>
+              <Text style={{ color: "#fff", fontWeight: "700" }}>+ Request</Text>
+            </Pressable>
+          </View>
           {/* AI Forecast banner */}
           <View style={{
             backgroundColor: "#0ea5e9",

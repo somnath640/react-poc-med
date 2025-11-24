@@ -1,7 +1,7 @@
 // ExpenseManagement.tsx
 import COLORS from "@/constants/LupinColors";
 import { Ionicons } from "@expo/vector-icons";
-import { router, useNavigation } from "expo-router";
+import { Stack, useNavigation } from "expo-router";
 import React, { JSX, useMemo, useState } from "react";
 import {
   Modal,
@@ -11,7 +11,6 @@ import {
   StatusBar,
   Text,
   TextInput,
-  TouchableOpacity,
   View,
   useWindowDimensions
 } from "react-native";
@@ -1257,86 +1256,16 @@ export default function ExpenseManagement(): JSX.Element {
       <StatusBar barStyle="light-content" backgroundColor={COLORS.brand.lupinGreen} />
 
       {/* ----- LUPIN CRM HEADER (NO BACK BUTTON) ----- */}
-      <View
-        style={{
-          backgroundColor: COLORS.brand.lupinGreen,
-          paddingHorizontal: 16,
-          paddingVertical: 13,
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        {/* Logo + App Name */}
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <View
-            style={{
-              width: 30,
-              height: 30,
-              borderRadius: 15,
-              backgroundColor: "#ffffff",
-              alignItems: "center",
-              justifyContent: "center",
-              marginRight: 8,
-            }}
-          >
-            <TouchableOpacity>
-                          <Ionicons name="chevron-back" size={20} onPress={() =>  router.replace({ pathname: '/(tabs)', params: { openDrawer: '1' } } as any) }/>
-                        </TouchableOpacity>
-          </View>
+      <Stack.Screen
+  options={{
+    title: "Chemist Visit",
+    headerStyle: { backgroundColor: COLORS.brand.lupinGreen },
+    headerTintColor: "#fff",
+    headerTitleStyle: { fontWeight: "bold" },
+  }}
+/>
 
-          <View>
-            <Text
-              style={{
-                color: "#ffffff",
-                fontSize: 15,
-                fontWeight: "700",
-              }}
-            >
-              LUPIN CRM
-            </Text>
-            <Text style={{ color: "#d9ffd7", fontSize: 11 }}>
-              Field Force Management
-            </Text>
-          </View>
-        </View>
-
-        {/* 3-dot menu */}
-        <View
-          style={{
-            alignItems: "flex-end",
-            justifyContent: "space-between",
-            height: 16,
-          }}
-        >
-          <View
-            style={{
-              width: 3,
-              height: 3,
-              borderRadius: 2,
-              backgroundColor: "#ffffff",
-            }}
-          />
-          <View
-            style={{
-              width: 3,
-              height: 3,
-              borderRadius: 2,
-              backgroundColor: "#ffffff",
-            }}
-          />
-          <View
-            style={{
-              width: 3,
-              height: 3,
-              borderRadius: 2,
-              backgroundColor: "#ffffff",
-            }}
-          />
-        </View>
-      </View>
-
-      <ScrollView contentContainerStyle={{ paddingVertical: 20 }}>
+      <ScrollView contentContainerStyle={{ paddingVertical: 20, paddingBottom: 80, }}>
         <View
           style={{
             width: containerWidth,

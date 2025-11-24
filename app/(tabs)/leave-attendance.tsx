@@ -2,15 +2,14 @@ import LeaveDetailsModal, { LeaveDetail } from "@/components/LeaveDetailModal";
 import LeaveModal from "@/components/LeaveModal";
 import COLORS from "@/constants/LupinColors";
 import { Ionicons } from "@expo/vector-icons";
-import { router } from "expo-router";
+import { Stack } from "expo-router";
 import React, { JSX, useMemo, useState } from "react";
 import {
   Pressable,
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
-  View,
+  View
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -105,44 +104,41 @@ export default function LeaveAttendence(): JSX.Element {
   }
 
   return (
-    <SafeAreaView style={styles.safe}>
+    <SafeAreaView style={[styles.safe, { paddingTop: 0 }]} edges={["bottom", "left", "right"]}>
       {/* GREEN APP HEADER */}
-      <View style={styles.appHeader}>
-        <TouchableOpacity
-          onPress={() =>
-            router.replace({
-              pathname: "/(tabs)",
-              params: { openDrawer: "1" },
-            } as any)
-          }
-          style={{ marginRight: 10 }}
-        >
-          <Ionicons name="chevron-back" size={20} color="#ffffff" />
-        </TouchableOpacity>
-
-        <View style={{ flex: 1 }}>
-          <Text style={styles.appHeaderTitle}>LUPIN CRM</Text>
-          <Text style={styles.appHeaderSubtitle}>Field Force Management</Text>
-        </View>
-
-        <Ionicons name="menu" size={20} color="#ffffff" />
-      </View>
+      <Stack.Screen
+  options={{
+    title: "Chemist Visit",
+    headerStyle: { backgroundColor: COLORS.brand.lupinGreen },
+    headerTintColor: "#fff",
+    headerTitleStyle: { fontWeight: "bold" },
+  }}
+/>
 
       <View style={styles.container}>
         {/* HEADER */}
-        <View style={styles.headerRow}>
+        {/* <View style={styles.headerRow}>
           <Text style={styles.headerTitle}>Leave & Attendance</Text>
 
           <Pressable style={styles.applyBtn} onPress={() => setLeaveModal(true)}>
             <Ionicons name="add" size={16} color="#ffffff" />
             <Text style={styles.applyBtnText}>Apply Leave</Text>
           </Pressable>
-        </View>
+        </View> */}
 
         <ScrollView
           contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
+          style= {{paddingBottom: 60, }}
         >
+          <View style={styles.headerRow}>
+    <Text style={styles.headerTitle}>Leave & Attendance</Text>
+
+    <Pressable style={styles.applyBtn} onPress={() => setLeaveModal(true)}>
+      <Ionicons name="add" size={16} color="#ffffff" />
+      <Text style={styles.applyBtnText}>Apply Leave</Text>
+    </Pressable>
+  </View>
           {/* --- Today's Attendance Card --- */}
           <View style={styles.attendanceCard}>
             <View style={styles.cardHeaderRow}>
@@ -411,32 +407,31 @@ const styles = StyleSheet.create({
 
   headerRow: {
     paddingHorizontal: 16,
-    paddingTop: 8,
-    paddingBottom: 4,
+    paddingVertical: 16,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
   },
 
   headerTitle: {
-    fontSize: 22,
-    fontWeight: "700",
-    color: "#111827",
+    fontSize: 20,       // Screenshot shows slightly smaller
+  fontWeight: "600",
+  color: "#111827",
   },
 
   applyBtn: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 6,
-    paddingHorizontal: 14,
-    paddingVertical: 8,
+    gap: 4,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
     borderRadius: 999,
-    backgroundColor: "#020617",
+    backgroundColor: "#0f172a",
   },
   applyBtnText: {
     color: "#ffffff",
-    fontWeight: "700",
-    fontSize: 13,
+  fontWeight: "600",
+  fontSize: 12,
   },
 
   attendanceCard: {
@@ -695,4 +690,5 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     marginTop: 4,
   },
+  
 });

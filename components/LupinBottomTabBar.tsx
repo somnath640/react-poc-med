@@ -1,139 +1,108 @@
-import { Ionicons } from '@expo/vector-icons';
-import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import React from 'react';
+import { Ionicons } from "@expo/vector-icons";
+import { router, usePathname } from "expo-router";
+import React from "react";
 import {
-  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
-} from 'react-native';
+  View
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-import { SafeAreaView } from 'react-native-safe-area-context';
-const BLUE = '#2563eb';
-const BLUE_50 = '#eef4ff';
-const GRAY_500 = '#6b7280';
-const GRAY_800 = '#111827';
+const BLUE = "#2563eb";
+const BLUE_50 = "#eef4ff";
+const GRAY_500 = "#6b7280";
 
-const LupinBottomTabBar: React.FC<BottomTabBarProps> = ({
-  state,
-  descriptors,
-  navigation,
-}) => {
+// Ionicons strict types
+type IconName = React.ComponentProps<typeof Ionicons>["name"];
+
+export default function LupinBottomTabBar() {
+  const pathname = usePathname();
+
+  const tabs: {
+    key: string;
+    label: string;
+    route: string;
+    icon: IconName;
+    iconActive: IconName;
+  }[] = [
+    { key: "home", label: "Home", route: "/", icon: "home-outline", iconActive: "home" },
+    { key: "route", label: "Route", route: "/route", icon: "navigate-outline", iconActive: "navigate" },
+    { key: "hcps", label: "HCPs", route: "/hcps", icon: "people-outline", iconActive: "people" },
+    { key: "calls", label: "Calls", route: "/calls", icon: "document-text-outline", iconActive: "document-text" },
+    {
+      key: "analytics",
+      label: "Analytics",
+      route: "/analytics",
+      icon: "analytics-outline",
+      iconActive: "analytics",
+    },
+  ];
+  
+
   return (
-    <SafeAreaView edges={['bottom']} shouldRasterizeIOS={true} style={styles.container}>
+    <SafeAreaView edges={["bottom"]} style={styles.container}>
       <View style={styles.pill}>
-          {state.routes.map((route, index) => {
-            const { options } = descriptors[route.key];
+        {tabs.map((tab) => {
+          const isActive = pathname === tab.route;
 
-            const label =
-              (options.tabBarLabel as string) ??
-              options.title ??
-              route.name;
-
-            const isFocused = state.index === index;
-
-            const onPress = () => {
-              const event = navigation.emit({
-                type: 'tabPress',
-                target: route.key,
-                canPreventDefault: true,
-              });
-
-              if (!isFocused && !event.defaultPrevented) {
-                navigation.navigate(route.name);
-              }
-            };
-
-            const iconName = getIconName(route.name, isFocused);
-
-            return (
-              <TouchableOpacity
-                key={route.key}
-                onPress={onPress}
-                style={styles.itemWrapper}
-                activeOpacity={0.85}
-              >
-                <View
+          return (
+            <TouchableOpacity
+              key={tab.key}
+              style={styles.itemWrapper}
+              activeOpacity={0.8}
+              onPress={() => router.push(tab.route as any)}
+            >
+              <View style={[styles.item, isActive && styles.itemActive]}>
+                <Ionicons
+                  name={isActive ? tab.iconActive : tab.icon}
+                  size={20}
+                  color={isActive ? BLUE : GRAY_500}
+                />
+                <Text
                   style={[
-                    styles.item,
-                    isFocused && styles.itemActive,
+                    styles.label,
+                    { color: isActive ? BLUE : GRAY_500 },
+                    isActive && { fontWeight: "700" },
                   ]}
                 >
-                  <Ionicons
-                    name={iconName}
-                    size={20}
-                    color={isFocused ? BLUE : GRAY_500}
-                  />
-                  <Text
-                    style={[
-                      styles.label,
-                      isFocused ? styles.labelActive : styles.labelInactive,
-                    ]}
-                  >
-                    {label}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            );
-          })}
+                  {tab.label}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          );
+        })}
       </View>
     </SafeAreaView>
   );
-};
-
-function getIconName(routeName: string, focused: boolean): any {
-  switch (routeName) {
-    case 'index':
-      return focused ? 'home' : 'home-outline';
-    case 'route':
-      return focused ? 'navigate' : 'navigate-outline';
-    case 'hcps':
-      return focused ? 'people' : 'people-outline';
-    case 'calls':
-      return focused ? 'document-text' : 'document-text-outline';
-    case 'analytics':
-      return focused ? 'analytics' : 'analytics-outline';
-    default:
-      return 'ellipse-outline';
-  }
 }
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
+    position: "absolute",
     left: 0,
     right: 0,
     bottom: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#ffffff',
-    paddingBottom: Platform.OS === 'android' ? 0 : 0,
-
+    backgroundColor: "#ffffff",
   },
   pill: {
-    flexDirection: 'row',
-    backgroundColor: '#ffffff',
-    // borderRadius: 24,
+    flexDirection: "row",
+    backgroundColor: "#ffffff",
     paddingHorizontal: 4,
     paddingVertical: 4,
-    width: '100%', // looks good on mobile + tablet
-    shadowColor: '#000',
+    width: "100%",
+    shadowColor: "#000",
     shadowOpacity: 0.08,
     shadowRadius: 10,
     shadowOffset: { width: 0, height: 0 },
-    // elevation: 4,
-    boxShadow: '0px -4px 10px rgba(165, 165, 165, 0.1)',
   },
   itemWrapper: {
     flex: 1,
   },
   item: {
-    flex: 1,
-    // borderRadius: 20,
     paddingVertical: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   itemActive: {
     backgroundColor: BLUE_50,
@@ -141,15 +110,6 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 12,
     marginTop: 4,
-  },
-  labelActive: {
-    color: BLUE,
-    fontWeight: '600',
-  },
-  labelInactive: {
-    color: GRAY_500,
-    fontWeight: '500',
+    fontWeight: "500",
   },
 });
-
-export default LupinBottomTabBar;

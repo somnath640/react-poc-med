@@ -140,7 +140,7 @@ function CustomDrawerContent(props: any) {
         label={() => (
           <LabelWrapper>
             <View style={styles.itemLeft}>
-              <Text style={styles.itemText} onPress={()=>router.push('/screens/field-activities/expense-management')}>Expense Management</Text>
+              <Text style={styles.itemText} onPress={()=>router.push('/(tabs)/expense-management')}>Expense Management</Text>
               <View style={styles.badge}>
                 <Text style={styles.badgeText}>2</Text>
               </View>
@@ -159,7 +159,7 @@ function CustomDrawerContent(props: any) {
         )}
         label={() => (
           <LabelWrapper>
-            <Text style={styles.itemText} onPress={()=>router.push('/screens/field-activities/leave-attendance')}>Leave & Attendance</Text>
+            <Text style={styles.itemText} onPress={()=>router.push('/(tabs)/leave-attendance')}>Leave & Attendance</Text>
           </LabelWrapper>
         )}
         onPress={() => {}}
@@ -177,7 +177,7 @@ function CustomDrawerContent(props: any) {
       <Text style={styles.itemText}>Sample Tracking</Text>
     </LabelWrapper>
   )}
-  onPress={() => router.push('/screens/field-activities/sampleTracking')}
+  onPress={() => router.push('/(tabs)/sampleTracking')}
 />
 
 
@@ -193,7 +193,7 @@ function CustomDrawerContent(props: any) {
       <Text style={styles.itemText}>Chemist Visit</Text>
     </LabelWrapper>
   )}
-  onPress={() => router.push('/screens/field-activities/chemist-visit')}
+  onPress={() => router.push('/(tabs)/chemist-visit')}
 />
 
 
@@ -214,7 +214,7 @@ function CustomDrawerContent(props: any) {
       </View>
     </LabelWrapper>
   )}
-  onPress={() => router.push('/screens/field-activities/stokist-visit')}
+  onPress={() => router.push('/(tabs)/stokist-visit')}
 />
 
 

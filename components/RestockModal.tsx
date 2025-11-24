@@ -2,14 +2,14 @@
 import { Picker as RNPicker } from "@react-native-picker/picker";
 import React, { useEffect, useState } from "react";
 import {
-    Image,
-    Modal,
-    Platform,
-    Pressable,
-    ScrollView,
-    Text,
-    TextInput,
-    View,
+  Image,
+  Modal,
+  Platform,
+  Pressable,
+  ScrollView,
+  Text,
+  TextInput,
+  View,
 } from "react-native";
 
 
