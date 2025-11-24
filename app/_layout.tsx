@@ -658,6 +658,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 18,
     marginTop: 22,
     paddingVertical: 12,
+    marginBottom: 16,
     borderRadius: 15,
     backgroundColor: "#dc2626",
     flexDirection: "row",
