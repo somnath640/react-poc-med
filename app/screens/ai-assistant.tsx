@@ -57,7 +57,7 @@ const Index = () => {
 
             <View style={styles.headerLeft}>
               <TouchableOpacity style={styles.backButton} onPress={() => router.replace({ pathname: '/(tabs)', params: { openDrawer: '1' } } as any)}>
-                <IconBackIOS />
+                <IconBackIOS color={'#fff'} />
               </TouchableOpacity>
 
               {/* <View style={styles.avatar}>
