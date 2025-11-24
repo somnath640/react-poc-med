@@ -1,19 +1,19 @@
 // full-plan.tsx
 import {
-    Feather,
-    Ionicons,
-    MaterialCommunityIcons,
-    MaterialIcons
+  Feather,
+  Ionicons,
+  MaterialCommunityIcons,
+  MaterialIcons
 } from '@expo/vector-icons';
 import { router, useNavigation } from 'expo-router';
 import React from 'react';
 import {
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 
 const doctors = [
@@ -44,7 +44,7 @@ const doctors = [
 ];
 
 const FullPlan: React.FC = () => {
-    const navigation = useNavigation();
+  const navigation = useNavigation();
   return (
     <View style={styles.root}>
       <StatusBar barStyle="light-content" backgroundColor={COLORS.green} />
@@ -54,19 +54,13 @@ const FullPlan: React.FC = () => {
         <View style={styles.headerLeft}>
           <View style={styles.logoCircle}>
             <TouchableOpacity>
-                          <Ionicons name="chevron-back" size={20} onPress={() =>  router.replace({ pathname: '/(tabs)', params: { openDrawer: '1' } } as any) }/>
-                        </TouchableOpacity>
+              <Ionicons name="chevron-back" size={20} onPress={() => router.replace({ pathname: '/(tabs)', params: { openDrawer: '1' } } as any)} />
+            </TouchableOpacity>
           </View>
           <View>
             <Text style={styles.headerTitle}>LUPIN CRM</Text>
             <Text style={styles.headerSubtitle}>Field Force Management</Text>
           </View>
-        </View>
-
-        <View style={styles.headerMenu}>
-          <View style={styles.menuDot} />
-          <View style={styles.menuDot} />
-          <View style={styles.menuDot} />
         </View>
       </View>
 
@@ -415,7 +409,7 @@ export default FullPlan;
 /* ---------- STYLES ---------- */
 
 const COLORS = {
-  green: '#0a8b36',
+  green: '#00AB84',
   bg: '#f5f7fb',
   white: '#ffffff',
   blueStrip: '#f3f7ff',
