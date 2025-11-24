@@ -1,3 +1,4 @@
+import COLORS from '@/constants/LupinColors';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from 'expo-router';
@@ -24,7 +25,7 @@ const LupinHeader: React.FC = () => {
 
   return (
     <LinearGradient
-      colors={[LUPIN_GREEN_LEFT, LUPIN_GREEN_RIGHT]}
+      colors={[COLORS.brand.lupinGreen, COLORS.brand.lupinGreen]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 0 }}
       style={styles.container}
