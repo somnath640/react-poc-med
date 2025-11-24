@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
   logoBox: {
     width: 40,
     height: 40,
-    borderRadius: 10,
+    // borderRadius: 10,
     backgroundColor: '#ffffff',
     alignItems: 'center',
     justifyContent: 'center',
