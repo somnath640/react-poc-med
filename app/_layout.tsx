@@ -238,7 +238,7 @@ function CustomDrawerContent(props: any) {
             </View>
           </LabelWrapper>
         )}
-        onPress={() => {}}
+        onPress={() => router.push('/screens/engagement-marketing/campaigns')}
       />
 
       <DrawerItem
@@ -253,7 +253,7 @@ function CustomDrawerContent(props: any) {
             <Text style={styles.itemText}>E-Detailing</Text>
           </LabelWrapper>
         )}
-        onPress={() => {}}
+        onPress={() => router.push('/screens/engagement-marketing/e-detailing')}
       />
 
       <DrawerItem
@@ -268,7 +268,7 @@ function CustomDrawerContent(props: any) {
             <Text style={styles.itemText}>KOL Management</Text>
           </LabelWrapper>
         )}
-        onPress={() => {}}
+        onPress={() => router.push('/screens/engagement-marketing/kol-management')}
       />
 
       {/* BUSINESS OPERATIONS */}
