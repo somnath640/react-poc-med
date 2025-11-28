@@ -286,7 +286,7 @@ function CustomDrawerContent(props: any) {
             <Text style={styles.itemText}>Distributor Management</Text>
           </LabelWrapper>
         )}
-        onPress={() => {}}
+        onPress={() => router.push('/screens/business-operations/distributor-management')}
       />
 
       <DrawerItem
@@ -306,7 +306,7 @@ function CustomDrawerContent(props: any) {
             </View>
           </LabelWrapper>
         )}
-        onPress={() => {}}
+        onPress={() => router.push('/screens/business-operations/bid-management')}
       />
 
       <DrawerItem
@@ -321,7 +321,7 @@ function CustomDrawerContent(props: any) {
             <Text style={styles.itemText}>PSP Integration</Text>
           </LabelWrapper>
         )}
-        onPress={() => {}}
+        onPress={() => router.push('/screens/business-operations/psp-integration')}
       />
 
       {/* TEAM & LEARNING */}
@@ -344,7 +344,7 @@ function CustomDrawerContent(props: any) {
             </View>
           </LabelWrapper>
         )}
-        onPress={() => {}}
+        onPress={() => router.push('/screens/team-learning/team-collaboration')}
       />
 
       <DrawerItem
