@@ -118,7 +118,9 @@ const HomeScreen = () => {
                 </Text>
               </View>
             </View>
-            <Text style={styles.bannerAction}>Start Review →</Text>
+            <Text style={styles.bannerAction} onPress={() =>
+                router.push('/screens/team-learning/EndOfDayReview')
+              }>Start Review →</Text>
           </LinearGradient>
 
           <LinearGradient
@@ -192,7 +194,9 @@ const HomeScreen = () => {
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Today's Schedule (4 visits)</Text>
             <TouchableOpacity>
-              <Text style={styles.viewDetails}>View Route</Text>
+              <Text style={styles.viewDetails} onPress={() =>
+                router.push('/route')
+              }>View Route</Text>
             </TouchableOpacity>
           </View>
           <ScrollView
